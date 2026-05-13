@@ -1,45 +1,47 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Serviço CA | Agendamento de espaços</title>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Agendamento de espaços</title>
 <style>
-:root{--red:#c90a24;--red2:#e1223d;--purple:#3c2c73;--white:#fff;--bg:#f3f0f2;--text:#1f2435;--muted:#667085}*{box-sizing:border-box}body{margin:0;font-family:Montserrat,Arial,sans-serif;background:var(--bg);color:var(--text)}
-.hero{background:linear-gradient(100deg,var(--purple),#7e234a);padding:30px 20px;border-bottom:4px solid var(--red2);color:#fff}.hero-in{max-width:1060px;margin:auto}.hero h1{margin:0;font-size:58px;letter-spacing:-.04em}.hero p{margin:8px 0 0;font-size:39px;line-height:1.02;font-weight:700}
-main{max-width:1060px;margin:24px auto;padding:0 20px}.card{background:#fff;border:1px solid #e4d9df;border-top:5px solid var(--red2);border-radius:20px;padding:20px;box-shadow:0 14px 30px rgba(40,20,30,.08)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}label{display:block;font-size:13px;font-weight:800;margin:0 0 7px;color:#3a3e53}select,input{width:100%;padding:12px;border:1px solid #d7dae6;border-radius:11px;font-size:16px}.hidden{display:none}
-.btn{width:100%;border:0;border-radius:12px;padding:14px;font-size:34px;font-weight:900;cursor:pointer;background:linear-gradient(180deg,var(--red2),var(--red));color:#fff;margin-top:12px}.helper{font-size:13px;color:var(--muted);margin:8px 0 0}
-.box{margin-top:14px;border:1px solid #efc3cc;background:#fff8fa;border-radius:14px;padding:14px}.box h3{font-size:39px;letter-spacing:-.02em;margin:0 0 8px}.box ul{margin:0;padding-left:20px;font-size:30px;line-height:1.4}
-.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.slot{padding:12px;border:1px solid #ef95a4;border-radius:10px;background:#fff;color:#9b1028;font-weight:800;font-size:30px;cursor:pointer}.slot:hover{border-color:var(--red2);transform:translateY(-1px)}
-.actions{display:flex;gap:10px;align-items:center;margin-top:12px}.confirm{flex:1;background:linear-gradient(180deg,var(--red2),var(--red));border:0;color:#fff;border-radius:10px;padding:12px 14px;font-size:29px;font-weight:800;display:none}.resume{font-size:29px;color:#3f445d}
-.back{display:inline-block;margin-top:12px;color:#443f8f;font-weight:700}
-.overlay{position:fixed;inset:0;background:rgba(20,16,28,.62);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}.modal{width:min(780px,100%);background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,.3)}.m-head{background:var(--red);color:#fff;padding:14px 18px;font-size:40px;font-weight:900;display:flex;justify-content:space-between}.m-body{padding:18px}.m-body p{margin:0 0 10px;font-size:28px}.m-actions{display:flex;gap:12px;justify-content:flex-end;padding-top:8px}.btn-gray,.btn-red{padding:11px 18px;border-radius:9px;border:0;font-size:27px;font-weight:800;cursor:pointer}.btn-gray{background:#6f6f72;color:#fff}.btn-red{background:var(--red);color:#fff}
-@media(max-width:800px){.grid{grid-template-columns:1fr}.hero h1{font-size:42px}.hero p{font-size:26px}.box h3{font-size:31px}.box ul,.slot,.confirm,.resume,.m-head,.m-body p,.btn-gray,.btn-red{font-size:20px}}
-</style></head><body>
-<header class="hero"><div class="hero-in"><h1>Agendamento de espaços</h1><p>Reserve plenários, salas de reunião, auditório e coworking com regras específicas por tipo.</p></div></header>
-<main><section class="card"><div class="grid">
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap');
+:root{--v:#e20031;--v2:#bf0029;--r:#664f98;--g:#00a091;--bg:#f3f1f4;--tx:#1e2233}*{box-sizing:border-box;margin:0;padding:0}body{font-family:Montserrat,sans-serif;background:var(--bg);color:var(--tx)}
+.hero{background:linear-gradient(100deg,#2e2156,#7a2856);border-bottom:4px solid var(--v);color:#fff;padding:28px 20px}.hero h1,.hero p{max-width:1060px;margin:auto}.hero h1{font-size:58px;line-height:.95}.hero p{margin-top:8px;font-size:37px;line-height:1}
+main{max-width:1060px;margin:22px auto;padding:0 20px}.card{background:#fff;border:1px solid #e6d9df;border-top:5px solid var(--v);border-radius:18px;padding:18px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{display:block;font-size:13px;font-weight:800;margin:0 0 7px}select,input{width:100%;padding:11px;border:1px solid #d7d8e2;border-radius:10px;font:inherit}.btn{margin-top:12px;width:100%;padding:13px;border:0;border-radius:10px;background:linear-gradient(180deg,var(--v),var(--v2));color:#fff;font-size:20px;font-weight:900;cursor:pointer}
+.rules,.board{margin-top:12px;border:1px solid #f0c3cd;border-radius:12px;padding:14px;background:#fff8fa}.rules h3,.board h3{font-size:24px;margin-bottom:8px}.rules ul{padding-left:18px;line-height:1.5}
+.schedule{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.slot{border:1px solid #eca3b2;border-radius:10px;padding:12px;background:#fff;cursor:pointer;text-align:center;font-weight:800}.slot:hover{border-color:var(--v)}
+.slot.sel{background:var(--v);color:#fff}.muted{font-size:12px;color:#6a7084}.actions{display:flex;gap:10px;margin-top:10px}.done{flex:1;border:0;background:linear-gradient(180deg,var(--v),var(--v2));color:#fff;border-radius:9px;padding:11px 12px;font-weight:800;display:none}
+.hidden{display:none}.back{display:inline-block;margin-top:12px;color:#4b3e95}
+@media(max-width:800px){.grid{grid-template-columns:1fr}.hero h1{font-size:42px}.hero p{font-size:24px}}
+</style>
+</head><body>
+<section class="hero"><h1>Agendamento de espaços</h1><p>Reserve plenários, salas de reunião, auditório e coworking com regras específicas por tipo.</p></section>
+<main><section class="card">
+<div class="grid">
 <div><label>Tipo de espaço</label><select id="tipo"><option value="plenario">Plenário</option><option value="sala">Sala de reunião</option><option value="auditorio">Auditório</option><option value="coworking">Coworking</option></select></div>
 <div><label>Local / prédio</label><select id="local"></select></div>
-<div id="capWrap" class="hidden"><label>Capacidade da sala</label><select id="cap"><option>4 lugares</option><option>10 lugares</option><option>20 lugares</option><option>40 lugares</option></select></div>
+<div id="capWrap" class="hidden"><label>Capacidade</label><select id="cap"><option>4 lugares</option><option>10 lugares</option><option>20 lugares</option><option>40 lugares</option></select></div>
 <div id="andarWrap" class="hidden"><label>Andar</label><select id="andar"></select></div>
-<div><label>Data do agendamento</label><input id="data" type="date"></div>
-<div><label>Você é o responsável pela reserva?</label><div><label><input type="radio" name="resp" value="sim" checked> Sim</label> <label><input type="radio" name="resp" value="nao"> Não</label></div></div>
-<div id="outroWrap" class="hidden" style="grid-column:1/-1"><label>Quem será o responsável?</label><input id="outro" type="text" placeholder="Nome completo e setor"></div></div>
-<button class="btn" id="buscar">Localizar horários disponíveis</button><div class="helper">No fundo são exibidos horários de início; ao clicar você escolhe o horário de término para concluir.</div>
-<div class="box"><h3>Regras de utilização do espaço</h3><ul id="regras"></ul></div>
-<div class="box hidden" id="disp"><h3 id="ttl"></h3><div class="slots" id="slots"></div><div class="actions"><button class="confirm" id="confirm">Realizar agendamento</button><span id="res" class="resume"></span></div></div>
-<a class="back" href="index.html">← Voltar para a página inicial</a></section></main>
-<div class="overlay" id="ov"><div class="modal"><div class="m-head">Selecionar horário <button id="x" style="background:none;border:0;color:#fff;font-size:34px;cursor:pointer">×</button></div><div class="m-body"><p id="info"></p><label>Horário de início *</label><input id="inicio" readonly><label style="margin-top:10px">Horário de término *</label><select id="fim"></select><div class="m-actions"><button class="btn-gray" id="cancel">Cancelar</button><button class="btn-red" id="cont">Continuar</button></div></div></div></div>
+<div><label>Data do agendamento</label><input type="date" id="data"/></div>
+<div><label>Responsável pela reserva?</label><div><label><input type="radio" name="resp" value="sim" checked/> Sim</label> <label style="margin-left:12px"><input type="radio" name="resp" value="nao"/> Não</label></div></div>
+<div id="outroWrap" class="hidden" style="grid-column:1/-1"><label>Quem será o responsável?</label><input id="outro" placeholder="Nome completo e setor"/></div>
+</div>
+<button class="btn" id="buscar">Localizar horários disponíveis</button>
+<p class="muted" style="margin-top:8px">Clique no horário como escolha de poltrona; depois selecione duração e término é preenchido automático.</p>
+<div class="rules"><h3>Regras de utilização do espaço</h3><ul id="regras"></ul></div>
+<div class="board hidden" id="board"><h3 id="titulo"></h3><div class="schedule" id="times"></div><div class="actions"><button class="done" id="done">Realizar agendamento</button><span id="resumo" class="muted"></span></div></div>
+<a class="back" href="index.html">← Voltar para página inicial</a>
+</section></main>
 <script>
-const tipo=document.getElementById('tipo'),local=document.getElementById('local'),capWrap=document.getElementById('capWrap'),andarWrap=document.getElementById('andarWrap'),andar=document.getElementById('andar'),regras=document.getElementById('regras');
-const disp=document.getElementById('disp'),slots=document.getElementById('slots'),ttl=document.getElementById('ttl'),confirm=document.getElementById('confirm'),res=document.getElementById('res');
-const ov=document.getElementById('ov'),inicio=document.getElementById('inicio'),fim=document.getElementById('fim'),info=document.getElementById('info');let inicioSel='',fimSel='';
-for(let i=1;i<=14;i++){const o=document.createElement('option');o.textContent=`${i}º andar`;andar.appendChild(o)}
+const tipo=tipoEl=document.getElementById('tipo'),local=document.getElementById('local'),regras=document.getElementById('regras');const board=document.getElementById('board'),times=document.getElementById('times'),titulo=document.getElementById('titulo');const done=document.getElementById('done'),resumo=document.getElementById('resumo');let inicio='';
+for(let i=1;i<=14;i++){andar.innerHTML+=`<option>${i}º andar</option>`}
 const loc={plenario:['Prédio Minas - 9º andar','Prédio Gerais - 9º andar'],sala:['Prédio Minas','Prédio Gerais'],auditorio:['Auditório principal - Prédio Minas'],coworking:['Prédio Gerais - 6º andar']};
-const reg={plenario:['Uso para reuniões formais e eventos institucionais.','Solicitação com 48h de antecedência.','É obrigatório informar necessidade de apoio técnico.'],sala:['Respeitar capacidade máxima da sala.','Liberar no horário final sem ultrapassar reserva.','Cancelamentos devem ser feitos no sistema.'],auditorio:['Eventos com público externo exigem autorização prévia.','Divulgação precisa ser validada pela administração.','Check-in técnico 30 minutos antes do início.'],coworking:['Uso no 6º andar do Gerais com estação disponível.','Não reservar mais de uma estação no mesmo período.','Ao término, deixar estação organizada.']};
-function sync(){capWrap.classList.toggle('hidden',tipo.value!=='sala');andarWrap.classList.toggle('hidden',tipo.value!=='sala');local.innerHTML='';loc[tipo.value].forEach(v=>{const o=document.createElement('option');o.textContent=v;local.appendChild(o)});regras.innerHTML='';reg[tipo.value].forEach(t=>{const li=document.createElement('li');li.textContent=t;regras.appendChild(li)});disp.classList.add('hidden');confirm.style.display='none';res.textContent='';}
+const reg={plenario:['Uso para eventos institucionais.','Solicitação com 48h de antecedência.','Informar apoio técnico quando necessário.'],sala:['Respeitar capacidade e horário final.','Cancelamentos no sistema.','Não exceder período reservado.'],auditorio:['Eventos externos precisam de autorização.','Material de divulgação deve ser aprovado.','Check-in técnico 30 min antes.'],coworking:['Uso exclusivo do 6º andar do Gerais.','Uma estação por reserva.','Ao sair, deixar estação organizada.']};
+function sync(){capWrap.classList.toggle('hidden',tipo.value!=='sala');andarWrap.classList.toggle('hidden',tipo.value!=='sala');local.innerHTML='';loc[tipo.value].forEach(v=>local.innerHTML+=`<option>${v}</option>`);regras.innerHTML='';reg[tipo.value].forEach(r=>regras.innerHTML+=`<li>${r}</li>`);board.classList.add('hidden');done.style.display='none';resumo.textContent='';}
 sync();tipo.addEventListener('change',sync);
-document.getElementsByName('resp').forEach(r=>r.addEventListener('change',()=>{document.getElementById('outroWrap').classList.toggle('hidden',document.querySelector('input[name="resp"]:checked').value!=='nao')}));
-function criarSlots(){slots.innerHTML='';['08:00','09:30','11:00','14:00','15:30','17:00'].forEach(h=>{const b=document.createElement('button');b.className='slot';b.textContent=h;b.onclick=()=>abrirModal(h);slots.appendChild(b)})}
-function abrirModal(h){inicioSel=h;inicio.value=h;info.textContent=`${tipo.options[tipo.selectedIndex].text} • ${local.value} • ${new Date(document.getElementById('data').value+'T00:00:00').toLocaleDateString('pt-BR')}`;fim.innerHTML='';['08:30','10:00','11:30','14:30','16:00','17:30','18:00'].filter(x=>x>h).forEach(t=>{const o=document.createElement('option');o.textContent=t;fim.appendChild(o)});ov.style.display='flex';}
-function fechar(){ov.style.display='none'};document.getElementById('x').onclick=fechar;document.getElementById('cancel').onclick=fechar;
-document.getElementById('cont').onclick=()=>{fimSel=fim.value;res.textContent=`Selecionado: ${inicioSel} às ${fimSel}`;confirm.style.display='inline-block';fechar();};
-document.getElementById('buscar').onclick=()=>{if(!document.getElementById('data').value){alert('Selecione a data.');return;} ttl.textContent=`Horários disponíveis para ${tipo.options[tipo.selectedIndex].text} • ${local.value} • ${new Date(document.getElementById('data').value+'T00:00:00').toLocaleDateString('pt-BR')}`;criarSlots();disp.classList.remove('hidden');confirm.style.display='none';res.textContent='';};
-confirm.onclick=()=>alert(`Reserva concluída: ${tipo.options[tipo.selectedIndex].text} em ${local.value}, de ${inicioSel} até ${fimSel}.`);
-</script></body></html>
+document.querySelectorAll('input[name="resp"]').forEach(i=>i.onchange=()=>outroWrap.classList.toggle('hidden',document.querySelector('input[name="resp"]:checked').value!=='nao'));
+document.getElementById('buscar').onclick=()=>{if(!data.value){alert('Selecione a data.');return;}const d=new Date(data.value+'T00:00:00').toLocaleDateString('pt-BR');titulo.textContent=`Horários para ${tipo.options[tipo.selectedIndex].text} • ${local.value} • ${d}`;times.innerHTML='';['08:00','09:00','10:00','11:00','13:00','14:00','15:00','16:00','17:00'].forEach(h=>{const b=document.createElement('button');b.className='slot';b.textContent=h;b.onclick=()=>{document.querySelectorAll('.slot').forEach(s=>s.classList.remove('sel'));b.classList.add('sel');const dur=prompt('Duração em minutos (30, 60, 90, 120):','60');if(!dur)return;const [hh,mm]=h.split(':').map(Number);const end=new Date(0,0,0,hh,mm+Number(dur));const fim=`${String(end.getHours()).padStart(2,'0')}:${String(end.getMinutes()).padStart(2,'0')}`;inicio=h;resumo.textContent=`Selecionado ${h} até ${fim} (${dur} min)`;done.style.display='inline-block';};times.appendChild(b)});board.classList.remove('hidden')}
+done.onclick=()=>alert('Agendamento concluído com sucesso!');
+</script>
+</body></html>

@@ -1,19 +1,53 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Serviço CA | Página Inicial</title>
-<style>
-:root{--roxo:#664f98;--verde:#00a091;--vermelho:#e20031;--texto:#25252d;--muted:#70707a;--fundo:#f7f6f2;--branco:#fff;--sombra:0 18px 45px rgba(33,33,45,.12);--radius:28px}*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Montserrat,Arial,sans-serif;background:var(--fundo);color:var(--texto)}a{text-decoration:none;color:inherit}.topbar{height:76px;background:rgba(255,255,255,.88);backdrop-filter:blur(18px);position:sticky;top:0;z-index:20;border-bottom:1px solid rgba(102,79,152,.12)}.topbar-content{max-width:1180px;margin:auto;height:100%;display:flex;align-items:center;justify-content:space-between;padding:0 26px}.brand{display:flex;gap:14px;align-items:center;font-weight:800;color:var(--roxo)}.brand-mark{width:48px;height:48px;border-radius:16px;background:linear-gradient(135deg,var(--verde),var(--roxo));display:grid;place-items:center;color:#fff}.nav{display:flex;gap:20px;font-size:14px;font-weight:600}.user-pill{padding:10px 16px;border-radius:999px;background:rgba(102,79,152,.1);color:var(--roxo);font-weight:800}
-.hero{min-height:380px;background:linear-gradient(95deg,rgba(28,24,38,.85),rgba(28,24,38,.28)),linear-gradient(145deg,rgba(226,0,49,.35),rgba(0,160,145,.1)),url('static/img/cidade-aerea.jpg') center/cover no-repeat}.hero-content{max-width:1180px;margin:auto;padding:72px 26px 92px;color:#fff}.tag{display:inline-flex;padding:9px 14px;border-radius:999px;background:rgba(245,230,196,.18);border:1px solid rgba(245,230,196,.28);font-size:13px;font-weight:700;margin-bottom:22px}h1{max-width:760px;font-size:clamp(38px,6vw,72px);line-height:.95;letter-spacing:-.06em;margin-bottom:22px}.hero p{max-width:610px;font-size:18px;line-height:1.6;color:rgba(255,255,255,.86)}
-main{max-width:1180px;margin:-52px auto 0;padding:0 26px 52px}.quick-panel,.schedule-box{background:#fff;border-radius:var(--radius);box-shadow:var(--sombra);padding:26px;border:1px solid rgba(102,79,152,.08)}.section-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:22px}.section-head h2{color:var(--roxo);font-size:26px}.section-head p{color:var(--muted);font-size:14px;margin-top:8px}
-.services-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}.service-card{min-height:168px;border-radius:24px;padding:20px;background:#fbfbfd;border:1px solid rgba(102,79,152,.1);display:flex;flex-direction:column;justify-content:space-between}.service-icon{width:52px;height:52px;border-radius:18px;display:grid;place-items:center;font-size:24px;background:rgba(226,0,49,.12);color:var(--vermelho);margin-bottom:18px}.service-card h3{font-size:16px;margin-bottom:8px}.service-card span{font-size:12px;color:var(--muted)}
-.btn{border:0;border-radius:16px;padding:15px 20px;font-weight:800;cursor:pointer}.btn-primary{background:linear-gradient(95deg,#e20031,#b80028);color:#fff}
-.dashboard-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:28px}.schedule-header{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid rgba(102,79,152,.1)}.badge{padding:8px 12px;border-radius:999px;background:rgba(226,0,49,.1);color:var(--vermelho);font-size:12px;font-weight:800}.table{width:100%;border-collapse:collapse}.table th,.table td{padding:12px 0;border-top:1px solid rgba(102,79,152,.08);font-size:13px}
-@media(max-width:960px){.services-grid,.dashboard-grid{grid-template-columns:1fr 1fr}}@media(max-width:640px){.nav{display:none}.services-grid,.dashboard-grid{grid-template-columns:1fr}}
-</style></head><body>
-<header class="topbar"><div class="topbar-content"><a href="#" class="brand"><div class="brand-mark">CA</div><div>Serviço CA<small style="display:block;color:var(--muted);font-size:11px">Cuidar do espaço é cuidar das pessoas</small></div></a><nav class="nav"><a href="#">Página inicial</a><a href="#">Lista de ocorrências</a><span class="user-pill">Lucas Nascimento</span></nav></div></header>
-<section class="hero"><div class="hero-content"><div class="tag">Cidade Administrativa • Serviços e Agendamentos</div><h1>Resolva, agende e acompanhe tudo em um só lugar.</h1><p>Uma página inicial moderna para acesso rápido aos serviços principais.</p></div></section>
-<main><section class="quick-panel"><div class="section-head"><div><h2>Acesso rápido</h2><p>Escolha o serviço que deseja solicitar ou consultar.</p></div><button class="btn btn-primary">Novo chamado</button></div><div class="services-grid">
-<a class="service-card" href="espacos.html"><div><div class="service-icon">🏛️</div><h3>Agendamento de espaços</h3></div><span>Sala, auditório, plenário e coworking</span></a>
-<a class="service-card" href="#"><div><div class="service-icon">🚌</div><h3>Agendamento de transporte</h3></div><span>Solicitar veículo ou deslocamento</span></a>
-<a class="service-card" href="#"><div><div class="service-icon">🛠️</div><h3>Abrir ocorrência</h3></div><span>Manutenção, apoio e serviços gerais</span></a>
-<a class="service-card" href="#"><div><div class="service-icon">🪪</div><h3>Agendamento da CIN</h3></div><span>Agendar emissão da carteira</span></a>
-</div></section></main></body></html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Serviço CA | Página Inicial</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap');
+    :root{--roxo:#664f98;--verde:#00a091;--vermelho:#e20031;--fundo:#f4f3f6;--txt:#1f2331;--muted:#667085;--card:#fff}
+    *{box-sizing:border-box;margin:0;padding:0} body{font-family:Montserrat,sans-serif;background:var(--fundo);color:var(--txt)}
+    .top{height:72px;background:#fff;border-bottom:3px solid var(--vermelho)} .top-in{max-width:1180px;margin:auto;height:100%;display:flex;justify-content:space-between;align-items:center;padding:0 20px}
+    .hero{background:linear-gradient(110deg,#271c3a,#5a2669 52%,#982450);color:#fff;position:relative;overflow:hidden}
+    .hero:after{content:"";position:absolute;inset:0;background:url('static/img/cidade-aerea.jpg') center/cover no-repeat;mix-blend-mode:screen;opacity:.18}
+    .hero-in{max-width:1180px;margin:auto;padding:58px 20px;position:relative;z-index:1}.hero h1{font-size:clamp(34px,5vw,58px);line-height:.95}.hero p{margin-top:14px;font-size:19px;max-width:700px}
+    main{max-width:1180px;margin:-26px auto 40px;padding:0 20px;display:grid;gap:22px}
+    .panel{background:var(--card);border-radius:22px;padding:24px;border:1px solid #e6e1ea;box-shadow:0 14px 30px rgba(20,15,30,.08)}
+    .head{display:flex;justify-content:space-between;align-items:end;margin-bottom:16px}.head h2{font-size:28px;color:#2a2940}.head p{font-size:13px;color:var(--muted)}
+    .services{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+    .service{border:1px solid #ead7de;border-radius:16px;padding:16px;background:linear-gradient(180deg,#fff,#fff8fa)} .service strong{display:block;margin-top:10px}.service span{font-size:12px;color:var(--muted)}
+    .ico{width:54px;height:54px;border-radius:14px;background:rgba(226,0,49,.12);display:grid;place-items:center;color:var(--vermelho);font-size:24px}
+    .comunicados{display:grid;grid-template-columns:1.2fr 1fr;gap:14px}
+    .notice-main{min-height:260px;border-radius:16px;padding:20px;background:linear-gradient(130deg,rgba(226,0,49,.95),rgba(148,17,57,.95)),url('static/img/cidade-predio.jpg') center/cover;color:#fff;display:flex;flex-direction:column;justify-content:end}
+    .notice-list article{padding:14px;border-radius:14px;background:#fff;border:1px solid #ece4e8;margin-bottom:10px}.notice-list small{color:var(--muted)}
+    @media(max-width:900px){.services{grid-template-columns:1fr 1fr}.comunicados{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<header class="top"><div class="top-in"><strong>🏛️ Serviço CA</strong><nav style="font-size:13px;color:#4c4e61">Página inicial | Lista de Ocorrências | Lucas Nascimento</nav></div></header>
+<section class="hero"><div class="hero-in"><h1>Serviços da Cidade Administrativa</h1><p>Interface mais moderna, rápida e clara para agendar serviços e acompanhar solicitações.</p></div></section>
+<main>
+  <section class="panel">
+    <div class="head"><div><h2>Acesso rápido</h2><p>Principais serviços em um clique.</p></div></div>
+    <div class="services">
+      <a class="service" href="espacos.html"><div class="ico">🏛️</div><strong>Agendamento de espaços</strong><span>Sala, plenário, auditório e coworking</span></a>
+      <a class="service" href="#"><div class="ico">🚌</div><strong>Agendamento de transporte</strong><span>Deslocamento e veículos</span></a>
+      <a class="service" href="#"><div class="ico">🛠️</div><strong>Abrir ocorrência</strong><span>Manutenção e suporte</span></a>
+      <a class="service" href="#"><div class="ico">🪪</div><strong>Agendamento da CIN</strong><span>Emissão da identidade nacional</span></a>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="head"><div><h2>Comunicados</h2><p>Informações importantes da administração.</p></div></div>
+    <div class="comunicados">
+      <article class="notice-main"><small>Comunicado principal</small><h3>Nova política de uso de espaços compartilhados entra em vigor em 20/05/2026.</h3></article>
+      <div class="notice-list">
+        <article><small>13/05/2026</small><p>Manutenção programada do sistema de agendamento das 22h às 23h.</p></article>
+        <article><small>12/05/2026</small><p>Novo fluxo de reserva de plenários com aprovação automática para horários livres.</p></article>
+        <article><small>10/05/2026</small><p>Atualização de regras para uso do coworking do 6º andar (Prédio Gerais).</p></article>
+      </div>
+    </div>
+  </section>
+</main>
+</body></html>
