@@ -380,6 +380,28 @@
     }
     .btn-ok:hover { transform: translateY(-2px); }
 
+    /* Edit mode banner */
+    .edit-banner {
+      background: linear-gradient(135deg,rgba(102,79,152,.08),rgba(102,79,152,.04));
+      border: 1.5px solid rgba(102,79,152,.2);
+      border-radius: 14px; padding: 14px 20px;
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 0;
+    }
+    .edit-banner .eb-ico {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg,var(--purple),var(--purple-light));
+      display: grid; place-items: center; font-size: 16px; flex-shrink: 0;
+    }
+    .edit-banner p { font-size: 13px; font-weight: 600; color: var(--text); }
+    .edit-banner p small { display: block; font-size: 11px; color: var(--muted); font-weight: 500; margin-top: 1px; }
+    .edit-banner { display: none; }
+    .edit-banner.visible { display: flex; }
+    .field select[disabled] {
+      background: var(--bg); color: var(--muted); cursor: not-allowed;
+      border-color: var(--border) !important; box-shadow: none !important;
+    }
+
     @media (max-width: 860px) {
       .main { grid-template-columns: 1fr; }
       .field-grid { grid-template-columns: 1fr; }
@@ -421,8 +443,8 @@
     <div class="nav-divider"></div>
     <div class="nav-links">
       <a href="index.html">Início</a>
-      <a href="ocorrencias.html">Ocorrências</a>
-      <a href="espacos.html" class="on">Agendamentos</a>
+      <a href="ocorrencias.html">Lista de Ocorrências</a>
+      <a href="agendamentos.html" class="on">Meus Agendamentos</a>
     </div>
     <div class="user-pill">
       <div class="avatar">LN</div>
@@ -435,8 +457,8 @@
 <section class="hero">
   <div class="hero-dots"></div>
   <div class="hero-in">
-    <a class="back-link" href="index.html">← Página inicial</a>
-    <div class="hero-badge">🏛️ Reserva de Espaços</div>
+    <a class="back-link" id="heroBackLink" href="index.html">← Página inicial</a>
+    <div class="hero-badge" id="heroBadge">🏛️ Reserva de Espaços</div>
     <h1>Agende seu espaço<br><em>com facilidade</em></h1>
     <p>Plenários, salas de reunião, auditório e coworking. Escolha o horário e confirme em segundos.</p>
   </div>
@@ -458,7 +480,11 @@
 
   <!-- FORM -->
   <div class="form-card">
-    <h2><div class="form-icon">📋</div>Detalhes da reserva</h2>
+    <div class="edit-banner" id="editBanner">
+      <div class="eb-ico">✏️</div>
+      <p>Modo de edição<small>O tipo de espaço está bloqueado. Altere apenas data e horário.</small></p>
+    </div>
+    <h2 style="margin-top:0" id="formTitle"><div class="form-icon">📋</div>Detalhes da reserva</h2>
     <div class="field-grid">
       <div class="field">
         <label>Tipo de espaço</label>
@@ -557,6 +583,29 @@
 
 <script>
   const $ = id => document.getElementById(id);
+
+  // ── Edit mode via URL params ──
+  const urlParams = new URLSearchParams(window.location.search);
+  const isEditMode = urlParams.get('edit') === '1';
+  const editTipo   = urlParams.get('tipo');
+
+  if (isEditMode && editTipo) {
+    // Show edit banner
+    $('editBanner').classList.add('visible');
+    // Update back link
+    $('heroBackLink').href = 'agendamentos.html';
+    $('heroBackLink').textContent = '← Meus agendamentos';
+    // Update badge
+    $('heroBadge').textContent = '✏️ Editando reserva';
+    // Update form title
+    $('formTitle').innerHTML = '<div class="form-icon" style="background:linear-gradient(135deg,var(--teal),var(--teal-light))">✏️</div>Escolha nova data e horário';
+    // Pre-select tipo and lock it
+    const tipoEl = document.getElementById('tipo');
+    if (tipoEl.querySelector(`option[value="${editTipo}"]`)) {
+      tipoEl.value = editTipo;
+    }
+    tipoEl.disabled = true;
+  }
   const tipo = $('tipo'), data = $('data');
   const board = $('board');
   const durPanel = $('durPanel'), durSummary = $('durSummary'), btnConfirm = $('btnConfirm');

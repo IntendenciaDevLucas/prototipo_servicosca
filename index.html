@@ -734,6 +734,7 @@
       overflow: hidden;
       text-decoration: none;
       color: var(--text);
+      cursor: pointer;
       transition: transform .3s cubic-bezier(.16, 1, .3, 1), box-shadow .3s;
     }
 
@@ -944,6 +945,80 @@
       gap: 20px;
     }
 
+    /* ── BOOKING MODAL ── */
+    .bk-overlay {
+      position: fixed; inset: 0; z-index: 400;
+      background: rgba(15,8,30,.6); backdrop-filter: blur(8px);
+      display: none; align-items: center; justify-content: center; padding: 20px;
+    }
+    .bk-overlay.visible { display: flex; animation: fadeIn .25s; }
+    .bk-modal {
+      background: white; border-radius: 24px; padding: 0;
+      width: 100%; max-width: 420px;
+      box-shadow: 0 32px 80px rgba(0,0,0,.25);
+      animation: popIn .35s cubic-bezier(.16,1,.3,1);
+      overflow: hidden;
+    }
+    .bk-header {
+      padding: 28px 28px 20px;
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .bk-close {
+      width: 32px; height: 32px; border: none; background: var(--bg);
+      border-radius: 8px; cursor: pointer; display: grid; place-items: center;
+      font-size: 18px; color: var(--muted); flex-shrink: 0;
+    }
+    .bk-close:hover { background: var(--border); }
+    .bk-type { font-size: 18px; font-weight: 900; margin-bottom: 4px; }
+    .bk-status-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 10px; border-radius: 100px;
+      font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em;
+    }
+    .bk-body { padding: 20px 28px; display: flex; flex-direction: column; gap: 12px; }
+    .bk-row {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 14px; font-weight: 600; color: var(--text);
+    }
+    .bk-row .bk-ico {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: var(--bg); display: grid; place-items: center;
+      font-size: 16px; flex-shrink: 0;
+    }
+    .bk-row small { display: block; font-size: 11px; color: var(--subtle); font-weight: 600; }
+    .bk-actions { padding: 20px 28px; display: flex; gap: 10px; border-top: 1px solid var(--border); }
+    .bk-btn-edit {
+      flex: 1; padding: 13px; background: linear-gradient(135deg,var(--purple),var(--purple-light));
+      color: white; font: 700 14px 'Montserrat',sans-serif; border: none;
+      border-radius: 12px; cursor: pointer; box-shadow: 0 6px 18px rgba(102,79,152,.3);
+      transition: transform .2s;
+    }
+    .bk-btn-edit:hover { transform: translateY(-1px); }
+    .bk-btn-cancel {
+      flex: 1; padding: 13px; background: white;
+      color: var(--red); font: 700 14px 'Montserrat',sans-serif;
+      border: 1.5px solid rgba(226,0,49,.25); border-radius: 12px; cursor: pointer;
+      transition: all .2s;
+    }
+    .bk-btn-cancel:hover { background: rgba(226,0,49,.05); border-color: var(--red); }
+    .bk-confirm {
+      padding: 20px 28px; background: rgba(226,0,49,.05);
+      border-top: 1px solid rgba(226,0,49,.15);
+      display: none;
+    }
+    .bk-confirm.visible { display: block; }
+    .bk-confirm p { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 14px; }
+    .bk-confirm-btns { display: flex; gap: 10px; }
+    .bk-confirm-yes {
+      flex: 1; padding: 11px; background: var(--red); color: white;
+      font: 700 13px 'Montserrat',sans-serif; border: none; border-radius: 10px; cursor: pointer;
+    }
+    .bk-confirm-no {
+      flex: 1; padding: 11px; background: white; color: var(--muted);
+      font: 700 13px 'Montserrat',sans-serif; border: 1.5px solid var(--border); border-radius: 10px; cursor: pointer;
+    }
+
     @media (max-width: 960px) {
       .services { grid-template-columns: 1fr 1fr; }
       .info-row  { grid-template-columns: 1fr; }
@@ -990,8 +1065,8 @@
       <div class="nav-divider"></div>
       <div class="nav-links">
         <a href="index.html" class="on">Início</a>
-        <a href="ocorrencias.html">Ocorrências</a>
-        <a href="espacos.html">Agendamentos</a>
+        <a href="ocorrencias.html">Lista de Ocorrências</a>
+        <a href="agendamentos.html">Meus Agendamentos</a>
       </div>
       <div class="user-pill">
         <div class="avatar">LN</div>
@@ -1159,7 +1234,7 @@
           <span style="font-size:13px;font-weight:500;color:var(--muted)">Próximas reservas confirmadas</span>
         </div>
         <div style="display:flex;align-items:center;gap:12px">
-          <a class="agendat-see-all" href="espacos.html">Ver todos</a>
+          <a class="agendat-see-all" href="agendamentos.html">Ver todos</a>
           <div class="agendat-nav">
             <button class="agendat-btn"
               onclick="document.getElementById('agScroll').scrollBy({left:-260,behavior:'smooth'})">‹</button>
@@ -1170,45 +1245,45 @@
       </div>
       <div class="agendat-scroll" id="agScroll">
 
-        <a class="ag-card" href="espacos.html" style="--c-bar: linear-gradient(90deg,#664F98,#8B70CC)">
+        <div class="ag-card" id="agc-0" onclick="openBooking(0)" style="--c-bar: linear-gradient(90deg,#664F98,#8B70CC)">
           <div class="ag-badge ag-conf">Confirmado</div>
           <div class="ag-date">Qua, 14 Mai 2026</div>
           <div class="ag-type">Sala de Reunião</div>
           <div class="ag-local">Prédio Minas · 4º andar</div>
           <div class="ag-time">14:00 <span>→ 15:00</span></div>
-        </a>
+        </div>
 
-        <a class="ag-card" href="espacos.html" style="--c-bar: linear-gradient(90deg,#F0A500,#FFB82E)">
+        <div class="ag-card" id="agc-1" onclick="openBooking(1)" style="--c-bar: linear-gradient(90deg,#F0A500,#FFB82E)">
           <div class="ag-badge ag-pend">Aguardando</div>
           <div class="ag-date">Qua, 20 Mai 2026</div>
           <div class="ag-type">Plenário</div>
           <div class="ag-local">Prédio Gerais · 9º andar</div>
           <div class="ag-time">09:00 <span>→ 11:00</span></div>
-        </a>
+        </div>
 
-        <a class="ag-card" href="espacos.html" style="--c-bar: linear-gradient(90deg,#00A091,#00BFB0)">
+        <div class="ag-card" id="agc-2" onclick="openBooking(2)" style="--c-bar: linear-gradient(90deg,#00A091,#00BFB0)">
           <div class="ag-badge ag-conf">Confirmado</div>
           <div class="ag-date">Sex, 22 Mai 2026</div>
           <div class="ag-type">Coworking</div>
           <div class="ag-local">Prédio Gerais · 6º andar</div>
           <div class="ag-time">08:00 <span>→ 12:00</span></div>
-        </a>
+        </div>
 
-        <a class="ag-card" href="espacos.html" style="--c-bar: linear-gradient(90deg,#664F98,#8B70CC)">
+        <div class="ag-card" id="agc-3" onclick="openBooking(3)" style="--c-bar: linear-gradient(90deg,#664F98,#8B70CC)">
           <div class="ag-badge ag-new">Novo</div>
           <div class="ag-date">Seg, 26 Mai 2026</div>
           <div class="ag-type">Auditório Principal</div>
           <div class="ag-local">Prédio Minas · Térreo</div>
           <div class="ag-time">13:00 <span>→ 17:00</span></div>
-        </a>
+        </div>
 
-        <a class="ag-card" href="espacos.html" style="--c-bar: linear-gradient(90deg,#00A091,#00BFB0)">
+        <div class="ag-card" id="agc-4" onclick="openBooking(4)" style="--c-bar: linear-gradient(90deg,#00A091,#00BFB0)">
           <div class="ag-badge ag-conf">Confirmado</div>
           <div class="ag-date">Ter, 27 Mai 2026</div>
           <div class="ag-type">Sala de Reunião</div>
           <div class="ag-local">Prédio Minas · 7º andar</div>
           <div class="ag-time">10:00 <span>→ 11:00</span></div>
-        </a>
+        </div>
 
       </div>
     </div>
@@ -1246,6 +1321,44 @@
 
   </div>
 
+<!-- BOOKING MODAL -->
+<div class="bk-overlay" id="bkOverlay" onclick="if(event.target===this)closeBk()">
+  <div class="bk-modal">
+    <div class="bk-header">
+      <div>
+        <div class="bk-type" id="bkType"></div>
+        <div class="bk-status-badge" id="bkStatus"></div>
+      </div>
+      <button class="bk-close" onclick="closeBk()">×</button>
+    </div>
+    <div class="bk-body">
+      <div class="bk-row">
+        <div class="bk-ico">📍</div>
+        <div><small>Local</small><span id="bkLocal"></span></div>
+      </div>
+      <div class="bk-row">
+        <div class="bk-ico">📅</div>
+        <div><small>Data</small><span id="bkDate"></span></div>
+      </div>
+      <div class="bk-row">
+        <div class="bk-ico">⏰</div>
+        <div><small>Horário</small><span id="bkTime"></span></div>
+      </div>
+    </div>
+    <div class="bk-actions">
+      <button class="bk-btn-edit" id="bkEditBtn">✏️ Editar reserva</button>
+      <button class="bk-btn-cancel" onclick="showCancelConfirm()">🗑 Cancelar</button>
+    </div>
+    <div class="bk-confirm" id="bkConfirm">
+      <p>Tem certeza que deseja cancelar esta reserva?</p>
+      <div class="bk-confirm-btns">
+        <button class="bk-confirm-yes" onclick="confirmCancel()">Sim, cancelar</button>
+        <button class="bk-confirm-no" onclick="hideCancelConfirm()">Voltar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   // Comunicados carousel
   let commIdx = 0;
@@ -1275,6 +1388,70 @@
     const diff = touchX - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 40) goComm(commIdx + (diff > 0 ? 1 : -1));
   });
+
+  // ── Booking modal ──
+  const bookings = [
+    { id: 0, type: 'Sala de Reunião',    tipo: 'sala',      local: 'Prédio Minas · 4º andar',    dateStr: 'Quarta-feira, 14 de Maio de 2026', start: '14:00', end: '15:00', statusLabel: 'Confirmado',  statusCls: 'ag-conf' },
+    { id: 1, type: 'Plenário',           tipo: 'plenario',  local: 'Prédio Gerais · 9º andar',   dateStr: 'Quarta-feira, 20 de Maio de 2026', start: '09:00', end: '11:00', statusLabel: 'Aguardando',  statusCls: 'ag-pend' },
+    { id: 2, type: 'Coworking',          tipo: 'coworking', local: 'Prédio Gerais · 6º andar',   dateStr: 'Sexta-feira, 22 de Maio de 2026',  start: '08:00', end: '12:00', statusLabel: 'Confirmado',  statusCls: 'ag-conf' },
+    { id: 3, type: 'Auditório Principal',tipo: 'auditorio', local: 'Prédio Minas · Térreo',      dateStr: 'Segunda-feira, 26 de Maio de 2026',start: '13:00', end: '17:00', statusLabel: 'Novo',        statusCls: 'ag-new'  },
+    { id: 4, type: 'Sala de Reunião',    tipo: 'sala',      local: 'Prédio Minas · 7º andar',    dateStr: 'Terça-feira, 27 de Maio de 2026',  start: '10:00', end: '11:00', statusLabel: 'Confirmado',  statusCls: 'ag-conf' },
+  ];
+
+  const statusColors = {
+    'ag-conf': { bg: 'rgba(0,160,145,.1)',  color: '#007A6E' },
+    'ag-pend': { bg: 'rgba(240,165,0,.12)', color: '#B87B00' },
+    'ag-new':  { bg: 'rgba(102,79,152,.1)', color: '#664F98' },
+  };
+
+  let activeBkId = null;
+
+  function openBooking(idx) {
+    const b = bookings[idx];
+    activeBkId = idx;
+    document.getElementById('bkType').textContent   = b.type;
+    document.getElementById('bkLocal').textContent  = b.local;
+    document.getElementById('bkDate').textContent   = b.dateStr;
+    document.getElementById('bkTime').textContent   = `${b.start} → ${b.end}`;
+
+    const badge  = document.getElementById('bkStatus');
+    const sc     = statusColors[b.statusCls] || statusColors['ag-conf'];
+    badge.textContent = b.statusLabel;
+    badge.style.background = sc.bg;
+    badge.style.color      = sc.color;
+
+    document.getElementById('bkEditBtn').onclick = () => {
+      window.location.href = `espacos.html?tipo=${b.tipo}&edit=1`;
+    };
+
+    document.getElementById('bkConfirm').classList.remove('visible');
+    document.getElementById('bkOverlay').classList.add('visible');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeBk() {
+    document.getElementById('bkOverlay').classList.remove('visible');
+    document.body.style.overflow = '';
+    activeBkId = null;
+  }
+
+  function showCancelConfirm()  { document.getElementById('bkConfirm').classList.add('visible'); }
+  function hideCancelConfirm()  { document.getElementById('bkConfirm').classList.remove('visible'); }
+
+  function confirmCancel() {
+    if (activeBkId === null) return;
+    const card = document.getElementById(`agc-${activeBkId}`);
+    if (card) {
+      card.style.transition = 'opacity .3s, transform .3s';
+      card.style.opacity    = '0';
+      card.style.transform  = 'scale(.9)';
+      setTimeout(() => card.remove(), 300);
+    }
+    closeBk();
+  }
+
+  // Keyboard close
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBk(); });
 </script>
 </body>
 

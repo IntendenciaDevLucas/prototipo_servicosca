@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Meus Agendamentos | Serviço CA</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+    :root{
+      --purple:#664F98;--purple-dark:#4A3470;--purple-light:#8B70CC;
+      --teal:#00A091;--teal-light:#00BFB0;--teal-dark:#007A6E;
+      --red:#E20031;--yellow:#F0A500;
+      --text:#2A2040;--muted:#6B6480;--subtle:#A498B8;
+      --bg:#F7F5FB;--surface:#FFFFFF;--border:#EDE8F5;
+      --shadow:0 4px 24px rgba(102,79,152,.10);--radius:20px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+
+    /* NAV */
+    nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:2px solid var(--red)}
+    .nav-in{max-width:1240px;margin:0 auto;height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 28px}
+    .brand{display:flex;align-items:center;gap:14px;text-decoration:none}
+    .brand img{height:46px;display:block}
+    .brand-fallback{display:flex;flex-direction:column;line-height:1}
+    .brand-fallback strong{font-size:14px;font-weight:900;color:var(--purple);letter-spacing:-.01em}
+    .brand-fallback small{font-size:10px;font-weight:600;color:var(--teal);letter-spacing:.04em;text-transform:uppercase}
+    .nav-divider{width:1px;height:28px;background:var(--border)}
+    .nav-links{display:flex;align-items:center;gap:4px}
+    .nav-links a{padding:8px 14px;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;border-radius:10px;transition:all .2s}
+    .nav-links a:hover{background:var(--bg);color:var(--purple)}
+    .nav-links a.on{background:rgba(102,79,152,.1);color:var(--purple)}
+    .user-pill{display:flex;align-items:center;gap:9px;padding:6px 14px 6px 6px;border:1px solid var(--border);border-radius:100px;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;background:white}
+    .avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--purple-light));display:grid;place-items:center;font-size:11px;font-weight:900;color:white}
+
+    /* HERO */
+    .hero{position:relative;overflow:hidden;padding:52px 28px 80px;background:linear-gradient(110deg,rgba(30,16,58,.93) 0%,rgba(30,16,58,.80) 50%,rgba(30,16,58,.55) 100%),url('static/img/cidade-arcos.jpg') center/cover no-repeat}
+    .hero-dots{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);background-size:30px 30px}
+    .hero-in{max-width:1240px;margin:0 auto;position:relative;z-index:1;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+    .back-link{position:absolute;top:-36px;left:0;display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:rgba(255,255,255,.48);text-decoration:none;transition:color .2s}
+    .back-link:hover{color:rgba(255,255,255,.8)}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:100px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.7);margin-bottom:16px}
+    .hero h1{font-size:clamp(26px,3.5vw,42px);font-weight:900;line-height:1.08;letter-spacing:-.022em;color:white;margin-bottom:8px}
+    .hero h1 em{font-style:normal;background:linear-gradient(120deg,#C4ABFF,var(--teal-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero p{font-size:15px;color:rgba(255,255,255,.52);font-weight:500}
+    .btn-new{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;background:linear-gradient(135deg,var(--purple),var(--purple-light));color:white;font:700 14px 'Montserrat',sans-serif;text-decoration:none;border-radius:14px;box-shadow:0 8px 24px rgba(102,79,152,.35);transition:transform .2s,box-shadow .2s;white-space:nowrap;align-self:flex-end}
+    .btn-new:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(102,79,152,.45)}
+
+    /* CONTENT */
+    .content{max-width:1240px;margin:-32px auto 64px;padding:0 28px;display:flex;flex-direction:column;gap:20px}
+
+    /* STATS */
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .sc{background:white;border:1px solid var(--border);border-radius:18px;padding:20px 18px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+    .sc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--c-bar)}
+    .sc-num{font-size:30px;font-weight:900;line-height:1;margin-bottom:4px}
+    .sc-label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+    .sc-total  {--c-bar:linear-gradient(90deg,var(--purple),var(--purple-light))}.sc-total .sc-num{color:var(--purple)}
+    .sc-prox   {--c-bar:linear-gradient(90deg,#3B82F6,#60A5FA)}.sc-prox .sc-num{color:#2563EB}
+    .sc-hoje   {--c-bar:linear-gradient(90deg,var(--yellow),#FFB82E)}.sc-hoje .sc-num{color:#B87B00}
+    .sc-passado{--c-bar:linear-gradient(90deg,var(--teal),var(--teal-light))}.sc-passado .sc-num{color:var(--teal-dark)}
+
+    /* FILTER */
+    .filter-row{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+    .filter-tabs{background:white;border:1px solid var(--border);border-radius:16px;padding:6px;display:flex;gap:4px;box-shadow:var(--shadow)}
+    .tab{padding:10px 20px;border-radius:12px;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .2s;border:none;background:none;font-family:'Montserrat',sans-serif}
+    .tab:hover{background:var(--bg);color:var(--purple)}
+    .tab.on{background:linear-gradient(135deg,var(--purple),var(--purple-light));color:white;box-shadow:0 4px 14px rgba(102,79,152,.32)}
+
+    /* BOOKING CARDS */
+    .booking-list{display:flex;flex-direction:column;gap:12px}
+    .bk{background:white;border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:var(--shadow);display:grid;grid-template-columns:auto 1fr auto;transition:box-shadow .2s}
+    .bk:hover{box-shadow:0 8px 32px rgba(102,79,152,.14)}
+    .bk.hidden{display:none}
+
+    /* Date column */
+    .bk-date-col{padding:22px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:80px;background:var(--bg);border-right:1px solid var(--border)}
+    .bk-day{font-size:28px;font-weight:900;color:var(--purple);line-height:1}
+    .bk-month{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+    .bk-weekday{font-size:10px;font-weight:600;color:var(--subtle);margin-top:2px}
+    .bk-date-col.today{background:linear-gradient(135deg,var(--purple),var(--purple-light))}
+    .bk-date-col.today .bk-day,.bk-date-col.today .bk-month,.bk-date-col.today .bk-weekday{color:white}
+    .bk-date-col.past{background:var(--bg)}
+    .bk-date-col.past .bk-day{color:var(--subtle)}
+
+    /* Body */
+    .bk-body{padding:20px 22px}
+    .bk-header-row{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+    .bk-title{font-size:15px;font-weight:800}
+    .bk-badge{padding:3px 10px;border-radius:100px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+    .badge-conf{background:rgba(0,160,145,.1);color:var(--teal-dark)}
+    .badge-pend{background:rgba(240,165,0,.12);color:#B87B00}
+    .badge-new{background:rgba(102,79,152,.1);color:var(--purple)}
+    .badge-done{background:rgba(100,100,120,.08);color:var(--muted)}
+    .badge-canc{background:rgba(226,0,49,.08);color:var(--red)}
+    .bk-sub{font-size:13px;color:var(--muted);font-weight:500;margin-bottom:12px}
+    .bk-meta{display:flex;gap:16px;flex-wrap:wrap}
+    .bk-meta-item{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--subtle);font-weight:600}
+    .bk-time-big{font-size:20px;font-weight:900;color:var(--text)}
+    .bk-time-big span{font-size:13px;font-weight:500;color:var(--muted)}
+
+    /* Actions */
+    .bk-actions{padding:20px 20px;display:flex;flex-direction:column;justify-content:center;gap:8px;border-left:1px solid var(--border)}
+    .bk-act-edit{padding:9px 18px;background:linear-gradient(135deg,var(--purple),var(--purple-light));color:white;font:700 12px 'Montserrat',sans-serif;border:none;border-radius:10px;cursor:pointer;white-space:nowrap;box-shadow:0 4px 12px rgba(102,79,152,.28);transition:transform .2s;text-decoration:none;display:grid;place-items:center}
+    .bk-act-edit:hover{transform:translateY(-1px)}
+    .bk-act-cancel{padding:9px 18px;background:white;color:var(--red);font:700 12px 'Montserrat',sans-serif;border:1.5px solid rgba(226,0,49,.2);border-radius:10px;cursor:pointer;white-space:nowrap;transition:all .2s}
+    .bk-act-cancel:hover{background:rgba(226,0,49,.05);border-color:var(--red)}
+    .bk-act-reagendar{padding:9px 18px;background:var(--bg);color:var(--muted);font:700 12px 'Montserrat',sans-serif;border:1px solid var(--border);border-radius:10px;cursor:pointer;white-space:nowrap;text-decoration:none;display:grid;place-items:center;transition:all .2s}
+    .bk-act-reagendar:hover{background:var(--purple);color:white;border-color:transparent}
+
+    /* EMPTY */
+    .empty{text-align:center;padding:56px 24px;color:var(--subtle)}
+    .empty-ico{font-size:48px;margin-bottom:16px}
+    .empty h3{font-size:18px;font-weight:800;color:var(--muted);margin-bottom:8px}
+    .empty p{font-size:14px;font-weight:500}
+    .hidden,.empty.hidden{display:none}
+
+    @media(max-width:860px){.stats-row{grid-template-columns:1fr 1fr}.bk{grid-template-columns:auto 1fr}.bk-actions{display:none}}
+    @media(max-width:600px){.hero{padding:40px 16px 70px}.content{padding:0 16px}.nav-links{display:none}}
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-in">
+    <a class="brand" href="index.html">
+      <img src="static/img/logo.png" alt="Cidade Administrativa"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="brand-fallback" style="display:none">
+        <strong>CIDADE ADMINISTRATIVA</strong>
+        <small>Cuidar do espaço é cuidar das pessoas</small>
+      </div>
+    </a>
+    <div class="nav-divider"></div>
+    <div class="nav-links">
+      <a href="index.html">Início</a>
+      <a href="ocorrencias.html">Lista de Ocorrências</a>
+      <a href="agendamentos.html" class="on">Meus Agendamentos</a>
+    </div>
+    <div class="user-pill">
+      <div class="avatar">LN</div>
+      Lucas Nascimento
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-dots"></div>
+  <div class="hero-in">
+    <div style="position:relative">
+      <a class="back-link" href="index.html">← Página inicial</a>
+      <div class="hero-badge">📅 Minhas reservas</div>
+      <h1>Meus <em>agendamentos</em></h1>
+      <p>Gerencie todas as suas reservas de espaços na Cidade Administrativa.</p>
+    </div>
+    <a class="btn-new" href="espacos.html">+ Novo agendamento</a>
+  </div>
+</section>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="sc sc-total"> <div class="sc-num">9</div> <div class="sc-label">Total</div></div>
+    <div class="sc sc-prox">  <div class="sc-num">5</div> <div class="sc-label">Próximas</div></div>
+    <div class="sc sc-hoje">  <div class="sc-num">1</div> <div class="sc-label">Hoje</div></div>
+    <div class="sc sc-passado"><div class="sc-num">3</div><div class="sc-label">Passadas</div></div>
+  </div>
+
+  <!-- FILTER -->
+  <div class="filter-row">
+    <div class="filter-tabs">
+      <button class="tab on" onclick="filterBk(this,'todas')">Todas</button>
+      <button class="tab"    onclick="filterBk(this,'proxima')">Próximas</button>
+      <button class="tab"    onclick="filterBk(this,'hoje')">Hoje</button>
+      <button class="tab"    onclick="filterBk(this,'passado')">Passados</button>
+    </div>
+  </div>
+
+  <!-- LIST -->
+  <div class="booking-list" id="bkList">
+
+    <!-- HOJE -->
+    <div class="bk" data-period="hoje">
+      <div class="bk-date-col today">
+        <div class="bk-day">13</div>
+        <div class="bk-month">Mai</div>
+        <div class="bk-weekday">Ter</div>
+      </div>
+      <div class="bk-body">
+        <div class="bk-header-row">
+          <div class="bk-title">Sala de Reunião</div>
+          <div class="bk-badge badge-conf">Confirmado</div>
+        </div>
+        <div class="bk-sub">Prédio Minas · 3º andar · Sala 302</div>
+        <div class="bk-meta">
+          <div class="bk-time-big">10:00 <span>→ 11:00</span></div>
+          <div class="bk-meta-item">👤 Lucas Nascimento</div>
+        </div>
+      </div>
+      <div class="bk-actions">
+        <a class="bk-act-edit" href="espacos.html?tipo=sala&edit=1">✏️ Editar</a>
+        <button class="bk-act-cancel" onclick="cancelBk(this)">🗑 Cancelar</button>
+      </div>
+    </div>
+
+    <!-- PROXIMAS -->
+    <div class="bk" data-period="proxima">
+      <div class="bk-date-col">
+        <div class="bk-day">14</div>
+        <div class="bk-month">Mai</div>
+        <div class="bk-weekday">Qua</div>
+      </div>
+      <div class="bk-body">
+        <div class="bk-header-row">
+          <div class="bk-title">Sala de Reunião</div>
+          <div class="bk-badge badge-conf">Confirmado</div>
+        </div>
+        <div class="bk-sub">Prédio Minas · 4º andar</div>
+        <div class="bk-meta">
+          <div class="bk-time-big">14:00 <span>→ 15:00</span></div>
+          <div class="bk-meta-item">👤 Lucas Nascimento</div>
+        </div>
+      </div>
+      <div class="bk-actions">
+        <a class="bk-act-edit" href="espacos.html?tipo=sala&edit=1">✏️ Editar</a>
+        <button class="bk-act-cancel" onclick="cancelBk(this)">🗑 Cancelar</button>
+      </div>
+    </div>
+
+    <div class="bk" data-period="proxima">
+      <div class="bk-date-col">
+        <div class="bk-day">20</div>
+        <div class="bk-month">Mai</div>
+        <div class="bk-weekday">Qua</div>
+      </div>
+      <div class="bk-body">
+        <div class="bk-header-row">
+          <div class="bk-title">Plenário</div>
+          <div class="bk-badge badge-pend">Aguardando</div>
+        </div>
+        <div class="bk-sub">Prédio Gerais · 9º andar</div>
+        <div class="bk-meta">
+          <div class="bk-time-big">09:00 <span>→ 11:00</span></div>
+          <div class="bk-meta-item">👤 Lucas Nascimento</div>
+        </div>
+      </div>
+      <div class="bk-actions">
+        <a class="bk-act-edit" href="espacos.html?tipo=plenario&edit=1">✏️ Editar</a>
+        <button class="bk-act-cancel" onclick="cancelBk(this)">🗑 Cancelar</button>
+      </div>
+    </div>
+
+    <div class="bk" data-period="proxima">
+      <div class="bk-date-col">
+        <div class="bk-day">22</div>
+        <div class="bk-month">Mai</div>
+        <div class="bk-weekday">Sex</div>
+      </div>
+      <div class="bk-body">
+        <div class="bk-header-row">
+          <div class="bk-title">Coworking</div>
+          <div class="bk-badge badge-conf">Confirmado</div>
+        </div>
+        <div class="bk-sub">Prédio Gerais · 6º andar</div>
+        <div class="bk-meta">
+          <div class="bk-time-big">08:00 <span>→ 12:00</span></div>
+          <div class="bk-meta-item">👤 Lucas Nascimento</div>
+        </div>
+      </div>
+      <div class="bk-actions">
+        <a class="bk-act-edit" href="espacos.html?tipo=coworking&edit=1">✏️ Editar</a>
+        <button class="bk-act-cancel" onclick="cancelBk(this)">🗑 Cancelar</button>
+      </div>
+    </div>
+
+    <div class="bk" data-period="proxima">
+      <div class="bk-date-col">
+        <div class="bk-day">26</div>
+        <div class="bk-month">Mai</div>
+        <div class="bk-weekday">Seg</div>
+      </div>
+      <div class="bk-body">
+        <div class="bk-header-row">
+          <div class="bk-title">Auditório Principal</div>
+          <div class="bk-badge badge-new">Novo</div>
+        </div>
+        <div class="bk-sub">Prédio Minas · Térreo</div>
+        <div class="bk-meta">
+          <div class="bk-time-big">13:00 <span>→ 17:00</span></div>
+          <div class="bk-meta-item">👤 Lucas Nascimento</div>
+        </div>
+      </div>
+      <div class="bk-actions">
+        <a class="bk-act-edit" href="espacos.html?tipo=auditorio&edit=1">✏️ Editar</a>
+        <button class="bk-act-cancel" onclick="cancelBk(this)">🗑 Cancelar</button>
+      </div>
+    </div>
+
+    <div class="bk" data-period="proxima">
+      <div class="bk-date-col">
+        <div class="bk-day">27</div>
+        <div class="bk-month">Mai</div>
+        <div class="bk-weekday">Ter</div>
+      </div>
+      <div class="bk-body">
+        <div class="bk-header-row">
+          <div class="bk-title">Sala de Reunião</div>
+          <div class="bk-badge badge-conf">Confirmado</div>
+        </div>
+        <div class="bk-sub">Prédio Minas · 7º andar</div>
+        <div class="bk-meta">
+          <div class="bk-time-big">10:00 <span>→ 11:00</span></div>
+          <div class="bk-meta-item">👤 Lucas Nascimento</div>
+        </div>
+      </div>
+      <div class="bk-actions">
+        <a class="bk-act-edit" href="espacos.html?tipo=sala&edit=1">✏️ Editar</a>
+        <button class="bk-act-cancel" onclick="cancelBk(this)">🗑 Cancelar</button>
+      </div>
+    </div>
+
+    <!-- PASSADOS -->
+    <div class="bk" data-period="passado">
+      <div class="bk-date-col past">
+        <div class="bk-day">08</div>
+        <div class="bk-month">Mai</div>
+        <div class="bk-weekday">Sex</div>
+      </div>
+      <div class="bk-body">
+        <div class="bk-header-row">
+          <div class="bk-title">Coworking</div>
+          <div class="bk-badge badge-done">Concluído</div>
+        </div>
+        <div class="bk-sub">Prédio Gerais · 6º andar</div>
+        <div class="bk-meta">
+          <div class="bk-time-big" style="color:var(--muted)">14:00 <span>→ 15:00</span></div>
+        </div>
+      </div>
+      <div class="bk-actions">
+        <a class="bk-act-reagendar" href="espacos.html?tipo=coworking">🔄 Reagendar</a>
+      </div>
+    </div>
+
+    <div class="bk" data-period="passado">
+      <div class="bk-date-col past">
+        <div class="bk-day">05</div>
+        <div class="bk-month">Mai</div>
+        <div class="bk-weekday">Ter</div>
+      </div>
+      <div class="bk-body">
+        <div class="bk-header-row">
+          <div class="bk-title">Sala de Reunião</div>
+          <div class="bk-badge badge-done">Concluído</div>
+        </div>
+        <div class="bk-sub">Prédio Minas · 2º andar</div>
+        <div class="bk-meta">
+          <div class="bk-time-big" style="color:var(--muted)">10:00 <span>→ 12:00</span></div>
+        </div>
+      </div>
+      <div class="bk-actions">
+        <a class="bk-act-reagendar" href="espacos.html?tipo=sala">🔄 Reagendar</a>
+      </div>
+    </div>
+
+    <div class="bk" data-period="passado">
+      <div class="bk-date-col past">
+        <div class="bk-day">29</div>
+        <div class="bk-month">Abr</div>
+        <div class="bk-weekday">Ter</div>
+      </div>
+      <div class="bk-body">
+        <div class="bk-header-row">
+          <div class="bk-title">Plenário</div>
+          <div class="bk-badge badge-canc">Cancelado</div>
+        </div>
+        <div class="bk-sub">Prédio Gerais · 9º andar</div>
+        <div class="bk-meta">
+          <div class="bk-time-big" style="color:var(--muted)">09:00 <span>→ 11:00</span></div>
+        </div>
+      </div>
+      <div class="bk-actions">
+        <a class="bk-act-reagendar" href="espacos.html?tipo=plenario">🔄 Reagendar</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="empty hidden" id="emptyBk">
+    <div class="empty-ico">📭</div>
+    <h3>Nenhum agendamento encontrado</h3>
+    <p>Tente outro filtro ou <a href="espacos.html" style="color:var(--purple);font-weight:700">faça um novo agendamento</a>.</p>
+  </div>
+
+</div>
+
+<script>
+  function filterBk(btn, period) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+    btn.classList.add('on');
+    const cards = document.querySelectorAll('.bk');
+    let visible = 0;
+    cards.forEach(c => {
+      const match = period === 'todas' || c.dataset.period === period;
+      c.classList.toggle('hidden', !match);
+      if (match) visible++;
+    });
+    document.getElementById('emptyBk').classList.toggle('hidden', visible > 0);
+  }
+
+  function cancelBk(btn) {
+    const card = btn.closest('.bk');
+    if (!confirm('Deseja cancelar este agendamento?')) return;
+    card.style.transition = 'opacity .3s, transform .3s';
+    card.style.opacity = '0';
+    card.style.transform = 'scale(.98) translateX(12px)';
+    setTimeout(() => card.remove(), 300);
+  }
+</script>
+</body>
+</html>
