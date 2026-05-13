@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Serviço CA | Agendamento de espaços</title>
+  <style>
+    :root { --roxo:#664f98; --verde:#00a091; --vermelho:#d7263d; --fundo:#f7f6f2; --texto:#25252d; --muted:#70707a; --branco:#fff; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Montserrat,Arial,sans-serif;background:linear-gradient(180deg,#fff,#fff6f7 26%,var(--fundo));color:var(--texto)}
+    .top{background:linear-gradient(100deg,#231b35,#3b2d57 44%,#8f2740);color:#fff;padding:28px 20px;border-bottom:4px solid var(--vermelho)}
+    .top h1{max-width:1000px;margin:0 auto;font-size:clamp(28px,4vw,42px);letter-spacing:-.04em}
+    .top p{max-width:1000px;margin:10px auto 0;color:#f1eaf5}
+    main{max-width:1000px;margin:24px auto;padding:0 20px 46px}
+    .box{background:var(--branco);border:1px solid rgba(102,79,152,.14);border-top:5px solid var(--vermelho);border-radius:20px;padding:22px;box-shadow:0 15px 30px rgba(25,20,40,.08)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    label{font-size:13px;font-weight:700;color:#484852;margin:8px 0 6px;display:block}
+    select,input,button{width:100%;padding:12px 13px;border-radius:12px;border:1px solid rgba(102,79,152,.2);font-size:14px}
+    button{background:linear-gradient(90deg,var(--vermelho),#bd1f35);color:#fff;font-weight:800;border:0;cursor:pointer;margin-top:16px}
+    .result{margin-top:20px;padding:16px;background:#fff7f8;border:1px solid rgba(215,38,61,.25);border-radius:14px}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .chip{padding:8px 11px;border-radius:999px;background:#fff;border:1px solid rgba(215,38,61,.35);font-size:12px;font-weight:700;color:#7f1f31}
+    .hint{font-size:12px;color:var(--muted);margin-top:6px}
+    .hidden{display:none}
+    .back{display:inline-block;margin:14px 0 0;color:var(--roxo);font-weight:700}
+    @media (max-width:760px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header class="top">
+    <h1>Agendamento de espaços</h1>
+    <p>Reserve plenários, salas de reunião, auditório e coworking com regras específicas por tipo.</p>
+  </header>
+  <main>
+    <div class="box">
+      <div class="grid">
+        <div>
+          <label for="tipo">Tipo de espaço</label>
+          <select id="tipo">
+            <option value="plenario">Plenário</option>
+            <option value="sala">Sala de reunião</option>
+            <option value="auditorio">Auditório</option>
+            <option value="coworking">Coworking</option>
+          </select>
+        </div>
+        <div id="predioWrap">
+          <label for="predio">Local / prédio</label>
+          <select id="predio"></select>
+        </div>
+
+        <div id="tipoSalaWrap" class="hidden">
+          <label for="tipoSala">Capacidade da sala</label>
+          <select id="tipoSala">
+            <option>4 lugares</option><option>10 lugares</option><option>20 lugares</option><option>40 lugares</option>
+          </select>
+        </div>
+
+        <div id="andarWrap" class="hidden">
+          <label for="andar">Andar</label>
+          <select id="andar"></select>
+        </div>
+
+        <div>
+          <label for="data">Data do agendamento</label>
+          <input id="data" type="date" />
+        </div>
+      </div>
+      <button id="buscar">Localizar horários disponíveis</button>
+      <div class="hint">Obs.: horários abaixo são uma simulação inicial para fluxo de UX.</div>
+
+      <div class="result hidden" id="resultado">
+        <strong id="tituloResultado"></strong>
+        <div class="chips" id="horarios"></div>
+        <div class="chips hidden" id="estacoes"></div>
+      </div>
+      <a class="back" href="index.html">← Voltar para a página inicial</a>
+    </div>
+  </main>
+
+<script>
+const tipo=document.getElementById('tipo'), predio=document.getElementById('predio'), tipoSalaWrap=document.getElementById('tipoSalaWrap'), andarWrap=document.getElementById('andarWrap'), andar=document.getElementById('andar');
+const resultado=document.getElementById('resultado'),titulo=document.getElementById('tituloResultado'),horarios=document.getElementById('horarios'),estacoes=document.getElementById('estacoes');
+const andares=[...Array(14)].map((_,i)=>`${i+1}º andar`);
+andares.forEach(a=>{const o=document.createElement('option');o.textContent=a;andar.appendChild(o)});
+function setOptions(opts){predio.innerHTML='';opts.forEach(t=>{const o=document.createElement('option');o.textContent=t;predio.appendChild(o)});}
+function sync(){
+  const v=tipo.value;
+  tipoSalaWrap.classList.toggle('hidden',v!=='sala');
+  andarWrap.classList.toggle('hidden',v!=='sala');
+  estacoes.classList.add('hidden');
+  if(v==='plenario') setOptions(['Prédio Minas - 9º andar','Prédio Gerais - 9º andar']);
+  if(v==='sala') setOptions(['Prédio Minas','Prédio Gerais']);
+  if(v==='auditorio') setOptions(['Auditório principal - Prédio Minas']);
+  if(v==='coworking') setOptions(['Prédio Gerais - 6º andar']);
+}
+sync(); tipo.addEventListener('change',sync);
+
+function chips(el,items){el.innerHTML=''; items.forEach(i=>{const c=document.createElement('span');c.className='chip';c.textContent=i;el.appendChild(c);});}
+
+document.getElementById('buscar').addEventListener('click',()=>{
+  const data=document.getElementById('data').value;
+  if(!data){alert('Selecione uma data para localizar horários.');return;}
+  const dataFmt=new Date(data+'T00:00:00').toLocaleDateString('pt-BR');
+  const base=['08:00','09:30','11:00','14:00','15:30','17:00'];
+  resultado.classList.remove('hidden');
+  chips(horarios,base);
+  let desc=`${tipo.options[tipo.selectedIndex].text} • ${predio.value} • ${dataFmt}`;
+  if(tipo.value==='sala') desc += ` • ${document.getElementById('tipoSala').value} • ${andar.value}`;
+  titulo.textContent='Horários disponíveis para ' + desc;
+  if(tipo.value==='coworking'){
+    estacoes.classList.remove('hidden');
+    chips(estacoes,['Estações: G06.036','G06.041','G06.052','G06.061']);
+  }
+});
+</script>
+</body>
+</html>
