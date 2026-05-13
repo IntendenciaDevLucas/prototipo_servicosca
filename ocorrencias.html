@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Minhas Ocorrências | Serviço CA</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+    :root{
+      --purple:#664F98;--purple-dark:#4A3470;--purple-light:#8B70CC;
+      --teal:#00A091;--teal-light:#00BFB0;
+      --red:#E20031;--yellow:#F0A500;
+      --text:#2A2040;--muted:#6B6480;--subtle:#A498B8;
+      --bg:#F7F5FB;--surface:#FFFFFF;--border:#EDE8F5;
+      --shadow:0 4px 24px rgba(102,79,152,.10);--radius:20px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+
+    /* NAV */
+    nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:2px solid var(--red)}
+    .nav-in{max-width:1240px;margin:0 auto;height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 28px}
+    .brand{display:flex;align-items:center;gap:14px;text-decoration:none}
+    .brand img{height:46px;display:block}
+    .brand-fallback{display:flex;flex-direction:column;line-height:1}
+    .brand-fallback strong{font-size:14px;font-weight:900;color:var(--purple);letter-spacing:-.01em}
+    .brand-fallback small{font-size:10px;font-weight:600;color:var(--teal);letter-spacing:.04em;text-transform:uppercase}
+    .nav-divider{width:1px;height:28px;background:var(--border)}
+    .nav-links{display:flex;align-items:center;gap:4px}
+    .nav-links a{padding:8px 14px;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;border-radius:10px;transition:all .2s}
+    .nav-links a:hover{background:var(--bg);color:var(--purple)}
+    .nav-links a.on{background:rgba(102,79,152,.1);color:var(--purple)}
+    .user-pill{display:flex;align-items:center;gap:9px;padding:6px 14px 6px 6px;border:1px solid var(--border);border-radius:100px;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;background:white}
+    .avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--purple-light));display:grid;place-items:center;font-size:11px;font-weight:900;color:white}
+
+    /* HERO */
+    .hero{position:relative;overflow:hidden;padding:52px 28px 80px;background:linear-gradient(110deg,rgba(30,16,58,.93) 0%,rgba(30,16,58,.80) 50%,rgba(30,16,58,.55) 100%),url('static/img/cidade-arcos.jpg') center/cover no-repeat}
+    .hero-dots{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);background-size:30px 30px}
+    .hero-in{max-width:1240px;margin:0 auto;position:relative;z-index:1;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+    .back-link{position:absolute;top:-36px;left:0;display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:rgba(255,255,255,.48);text-decoration:none;transition:color .2s}
+    .back-link:hover{color:rgba(255,255,255,.8)}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:100px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.7);margin-bottom:16px}
+    .hero h1{font-size:clamp(26px,3.5vw,42px);font-weight:900;line-height:1.08;letter-spacing:-.022em;color:white;margin-bottom:8px}
+    .hero h1 em{font-style:normal;background:linear-gradient(120deg,#C4ABFF,var(--teal-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero p{font-size:15px;color:rgba(255,255,255,.52);font-weight:500}
+    .btn-new{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;background:linear-gradient(135deg,var(--red),#FF3D60);color:white;font:700 14px 'Montserrat',sans-serif;text-decoration:none;border-radius:14px;box-shadow:0 8px 24px rgba(226,0,49,.35);transition:transform .2s,box-shadow .2s;white-space:nowrap;align-self:flex-end}
+    .btn-new:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(226,0,49,.45)}
+
+    /* CONTENT */
+    .content{max-width:1240px;margin:-32px auto 64px;padding:0 28px;display:flex;flex-direction:column;gap:22px}
+
+    /* STATS ROW */
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .stat-card{background:white;border:1px solid var(--border);border-radius:18px;padding:20px 18px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+    .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--c-bar)}
+    .stat-num{font-size:30px;font-weight:900;line-height:1;margin-bottom:4px}
+    .stat-label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+    .stat-total{--c-bar:linear-gradient(90deg,var(--purple),var(--purple-light))}
+    .stat-total .stat-num{color:var(--purple)}
+    .stat-aberto{--c-bar:linear-gradient(90deg,#3B82F6,#60A5FA)}
+    .stat-aberto .stat-num{color:#3B82F6}
+    .stat-andamento{--c-bar:linear-gradient(90deg,var(--yellow),#FFB82E)}
+    .stat-andamento .stat-num{color:var(--yellow)}
+    .stat-concluido{--c-bar:linear-gradient(90deg,var(--teal),var(--teal-light))}
+    .stat-concluido .stat-num{color:var(--teal)}
+
+    /* FILTER TABS */
+    .filter-wrap{background:white;border:1px solid var(--border);border-radius:16px;padding:6px;display:flex;gap:4px;box-shadow:var(--shadow);width:fit-content}
+    .tab{padding:10px 20px;border-radius:12px;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .2s;border:none;background:none;font-family:'Montserrat',sans-serif}
+    .tab:hover{background:var(--bg);color:var(--purple)}
+    .tab.on{background:linear-gradient(135deg,var(--purple),var(--purple-light));color:white;box-shadow:0 4px 14px rgba(102,79,152,.32)}
+
+    /* SEARCH BAR */
+    .search-bar{display:flex;gap:10px;align-items:center}
+    .search-input{flex:1;padding:12px 16px;border:1.5px solid var(--border);border-radius:12px;font:600 14px 'Montserrat',sans-serif;color:var(--text);background:white;outline:none;transition:border-color .2s}
+    .search-input:focus{border-color:var(--purple);box-shadow:0 0 0 4px rgba(102,79,152,.1)}
+    .search-input::placeholder{color:var(--subtle);font-weight:500}
+
+    /* OCCURRENCE CARDS */
+    .occ-list{display:flex;flex-direction:column;gap:12px}
+    .occ-card{background:white;border:1px solid var(--border);border-radius:18px;padding:22px 24px;box-shadow:var(--shadow);display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:start;transition:box-shadow .2s,transform .2s;cursor:pointer;text-decoration:none;color:var(--text)}
+    .occ-card:hover{box-shadow:0 8px 32px rgba(102,79,152,.14);transform:translateY(-2px)}
+    .occ-card.hidden,.hidden{display:none}
+
+    .occ-num{font-size:11px;font-weight:800;color:var(--subtle);letter-spacing:.05em;margin-bottom:4px}
+    .occ-num strong{font-size:18px;font-weight:900;color:var(--purple);display:block;letter-spacing:.01em}
+
+    .occ-body{}
+    .occ-title{font-size:15px;font-weight:800;margin-bottom:4px}
+    .occ-sub{font-size:13px;color:var(--muted);font-weight:500;margin-bottom:12px}
+    .occ-meta{display:flex;gap:16px;flex-wrap:wrap}
+    .occ-meta-item{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--subtle);font-weight:600}
+
+    .occ-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+    .badge{padding:5px 14px;border-radius:100px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+    .badge-aberto{background:rgba(59,130,246,.1);color:#2563EB}
+    .badge-andamento{background:rgba(240,165,0,.12);color:#B87B00}
+    .badge-concluido{background:rgba(0,160,145,.1);color:var(--teal-dark,#007A6E)}
+    .badge-cancelado{background:rgba(102,79,152,.08);color:var(--muted)}
+
+    .occ-date{font-size:11px;color:var(--subtle);font-weight:600;text-align:right}
+    .occ-action{font-size:12px;font-weight:700;color:var(--purple);white-space:nowrap}
+
+    /* EMPTY STATE */
+    .empty{text-align:center;padding:56px 24px;color:var(--subtle)}
+    .empty-ico{font-size:48px;margin-bottom:16px}
+    .empty h3{font-size:18px;font-weight:800;color:var(--muted);margin-bottom:8px}
+    .empty p{font-size:14px;font-weight:500}
+
+    @media(max-width:860px){.stats-row{grid-template-columns:1fr 1fr}.occ-card{grid-template-columns:1fr;gap:10px}.occ-right{align-items:flex-start;flex-direction:row;flex-wrap:wrap}}
+    @media(max-width:600px){.hero{padding:40px 16px 70px}.content{padding:0 16px}.nav-links{display:none}.stats-row{grid-template-columns:1fr 1fr}.filter-wrap{flex-wrap:wrap}}
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-in">
+    <a class="brand" href="index.html">
+      <img src="static/img/logo.png" alt="Cidade Administrativa"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="brand-fallback" style="display:none">
+        <strong>CIDADE ADMINISTRATIVA</strong>
+        <small>Cuidar do espaço é cuidar das pessoas</small>
+      </div>
+    </a>
+    <div class="nav-divider"></div>
+    <div class="nav-links">
+      <a href="index.html">Início</a>
+      <a href="ocorrencias.html" class="on">Ocorrências</a>
+      <a href="espacos.html">Agendamentos</a>
+    </div>
+    <div class="user-pill">
+      <div class="avatar">LN</div>
+      Lucas Nascimento
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-dots"></div>
+  <div class="hero-in">
+    <div style="position:relative">
+      <a class="back-link" href="index.html">← Página inicial</a>
+      <div class="hero-badge">🛠️ Histórico de atendimentos</div>
+      <h1>Minhas <em>ocorrências</em></h1>
+      <p>Acompanhe o status de todas as solicitações abertas por você.</p>
+    </div>
+    <a class="btn-new" href="ocorrencia.html">+ Abrir nova ocorrência</a>
+  </div>
+</section>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card stat-total"><div class="stat-num" id="cnt-total">5</div><div class="stat-label">Total</div></div>
+    <div class="stat-card stat-aberto"><div class="stat-num" id="cnt-aberto">2</div><div class="stat-label">Em aberto</div></div>
+    <div class="stat-card stat-andamento"><div class="stat-num" id="cnt-andamento">1</div><div class="stat-label">Em andamento</div></div>
+    <div class="stat-card stat-concluido"><div class="stat-num" id="cnt-concluido">2</div><div class="stat-label">Concluídas</div></div>
+  </div>
+
+  <!-- FILTERS + SEARCH -->
+  <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+    <div class="filter-wrap">
+      <button class="tab on" data-filter="todas" onclick="filterBy(this,'todas')">Todas</button>
+      <button class="tab" data-filter="aberto" onclick="filterBy(this,'aberto')">Em aberto</button>
+      <button class="tab" data-filter="andamento" onclick="filterBy(this,'andamento')">Em andamento</button>
+      <button class="tab" data-filter="concluido" onclick="filterBy(this,'concluido')">Concluídas</button>
+    </div>
+    <input class="search-input" placeholder="🔍  Buscar por protocolo, serviço ou local..." oninput="searchCards(this.value)" style="max-width:320px"/>
+  </div>
+
+  <!-- LIST -->
+  <div class="occ-list" id="occList">
+
+    <div class="occ-card" data-status="aberto" data-search="limpeza coworking gerais 6 00147">
+      <div>
+        <div class="occ-num">Protocolo<strong>#00147</strong></div>
+      </div>
+      <div class="occ-body">
+        <div class="occ-title">Limpeza especial — Coworking</div>
+        <div class="occ-sub">Necessidade de limpeza profunda da área de coworking após evento.</div>
+        <div class="occ-meta">
+          <div class="occ-meta-item">🏢 Prédio Gerais · 6º andar</div>
+          <div class="occ-meta-item">👤 Lucas Nascimento</div>
+        </div>
+      </div>
+      <div class="occ-right">
+        <div class="badge badge-aberto">Em aberto</div>
+        <div class="occ-date">13/05/2026</div>
+        <div class="occ-action">Ver detalhes →</div>
+      </div>
+    </div>
+
+    <div class="occ-card" data-status="aberto" data-search="ti rede internet minas sala 701 00145">
+      <div>
+        <div class="occ-num">Protocolo<strong>#00145</strong></div>
+      </div>
+      <div class="occ-body">
+        <div class="occ-title">Suporte de TI — Sem acesso à internet</div>
+        <div class="occ-sub">Sem acesso à internet desde quinta-feira. Afeta toda a sala.</div>
+        <div class="occ-meta">
+          <div class="occ-meta-item">🏢 Prédio Minas · 7º andar · Sala 701</div>
+          <div class="occ-meta-item">👤 Lucas Nascimento</div>
+        </div>
+      </div>
+      <div class="occ-right">
+        <div class="badge badge-aberto">Em aberto</div>
+        <div class="occ-date">12/05/2026</div>
+        <div class="occ-action">Ver detalhes →</div>
+      </div>
+    </div>
+
+    <div class="occ-card" data-status="andamento" data-search="ar condicionado minas sala 302 00142">
+      <div>
+        <div class="occ-num">Protocolo<strong>#00142</strong></div>
+      </div>
+      <div class="occ-body">
+        <div class="occ-title">Ar condicionado — Manutenção preventiva</div>
+        <div class="occ-sub">Ar condicionado com ruído e não resfriando adequadamente. Sala em uso constante.</div>
+        <div class="occ-meta">
+          <div class="occ-meta-item">🏢 Prédio Minas · 3º andar · Sala 302</div>
+          <div class="occ-meta-item">👤 Lucas Nascimento</div>
+        </div>
+      </div>
+      <div class="occ-right">
+        <div class="badge badge-andamento">Em andamento</div>
+        <div class="occ-date">10/05/2026</div>
+        <div class="occ-action">Ver detalhes →</div>
+      </div>
+    </div>
+
+    <div class="occ-card" data-status="concluido" data-search="eletrica lampada gerais 5 corredor 00138">
+      <div>
+        <div class="occ-num">Protocolo<strong>#00138</strong></div>
+      </div>
+      <div class="occ-body">
+        <div class="occ-title">Elétrica — Troca de lâmpada</div>
+        <div class="occ-sub">Três lâmpadas queimadas no corredor do 5º andar. Área com pouca iluminação.</div>
+        <div class="occ-meta">
+          <div class="occ-meta-item">🏢 Prédio Gerais · 5º andar · Corredor</div>
+          <div class="occ-meta-item">👤 Lucas Nascimento</div>
+        </div>
+      </div>
+      <div class="occ-right">
+        <div class="badge badge-concluido">Concluída</div>
+        <div class="occ-date">05/05/2026</div>
+        <div class="occ-action">Ver detalhes →</div>
+      </div>
+    </div>
+
+    <div class="occ-card" data-status="concluido" data-search="hidraulica torneira vazamento minas 2 banheiro 00125">
+      <div>
+        <div class="occ-num">Protocolo<strong>#00125</strong></div>
+      </div>
+      <div class="occ-body">
+        <div class="occ-title">Hidráulica — Reparo em torneira</div>
+        <div class="occ-sub">Torneira com vazamento constante no banheiro masculino do 2º andar.</div>
+        <div class="occ-meta">
+          <div class="occ-meta-item">🏢 Prédio Minas · 2º andar · Banheiro masculino</div>
+          <div class="occ-meta-item">👤 Lucas Nascimento</div>
+        </div>
+      </div>
+      <div class="occ-right">
+        <div class="badge badge-concluido">Concluída</div>
+        <div class="occ-date">28/04/2026</div>
+        <div class="occ-action">Ver detalhes →</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="empty hidden" id="emptyState">
+    <div class="empty-ico">🔍</div>
+    <h3>Nenhuma ocorrência encontrada</h3>
+    <p>Tente outros filtros ou termos de busca.</p>
+  </div>
+
+</div>
+
+<script>
+  function filterBy(btn, filter) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+    btn.classList.add('on');
+    const cards = document.querySelectorAll('.occ-card');
+    let visible = 0;
+    cards.forEach(c => {
+      const match = filter === 'todas' || c.dataset.status === filter;
+      c.classList.toggle('hidden', !match);
+      if(match) visible++;
+    });
+    document.getElementById('emptyState').classList.toggle('hidden', visible > 0);
+  }
+
+  function searchCards(q) {
+    const term = q.toLowerCase().trim();
+    const cards = document.querySelectorAll('.occ-card');
+    let visible = 0;
+    cards.forEach(c => {
+      const haystack = (c.dataset.search + ' ' + c.textContent).toLowerCase();
+      const match = !term || haystack.includes(term);
+      c.classList.toggle('hidden', !match);
+      if(match) visible++;
+    });
+    document.getElementById('emptyState').classList.toggle('hidden', visible > 0);
+  }
+</script>
+</body>
+</html>

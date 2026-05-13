@@ -1,53 +1,1281 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Serviço CA | Página Inicial</title>
+  <title>Serviço CA | Cidade Administrativa</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap');
-    :root{--roxo:#664f98;--verde:#00a091;--vermelho:#e20031;--fundo:#f4f3f6;--txt:#1f2331;--muted:#667085;--card:#fff}
-    *{box-sizing:border-box;margin:0;padding:0} body{font-family:Montserrat,sans-serif;background:var(--fundo);color:var(--txt)}
-    .top{height:72px;background:#fff;border-bottom:3px solid var(--vermelho)} .top-in{max-width:1180px;margin:auto;height:100%;display:flex;justify-content:space-between;align-items:center;padding:0 20px}
-    .hero{background:linear-gradient(110deg,#271c3a,#5a2669 52%,#982450);color:#fff;position:relative;overflow:hidden}
-    .hero:after{content:"";position:absolute;inset:0;background:url('static/img/cidade-aerea.jpg') center/cover no-repeat;mix-blend-mode:screen;opacity:.18}
-    .hero-in{max-width:1180px;margin:auto;padding:58px 20px;position:relative;z-index:1}.hero h1{font-size:clamp(34px,5vw,58px);line-height:.95}.hero p{margin-top:14px;font-size:19px;max-width:700px}
-    main{max-width:1180px;margin:-26px auto 40px;padding:0 20px;display:grid;gap:22px}
-    .panel{background:var(--card);border-radius:22px;padding:24px;border:1px solid #e6e1ea;box-shadow:0 14px 30px rgba(20,15,30,.08)}
-    .head{display:flex;justify-content:space-between;align-items:end;margin-bottom:16px}.head h2{font-size:28px;color:#2a2940}.head p{font-size:13px;color:var(--muted)}
-    .services{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
-    .service{border:1px solid #ead7de;border-radius:16px;padding:16px;background:linear-gradient(180deg,#fff,#fff8fa)} .service strong{display:block;margin-top:10px}.service span{font-size:12px;color:var(--muted)}
-    .ico{width:54px;height:54px;border-radius:14px;background:rgba(226,0,49,.12);display:grid;place-items:center;color:var(--vermelho);font-size:24px}
-    .comunicados{display:grid;grid-template-columns:1.2fr 1fr;gap:14px}
-    .notice-main{min-height:260px;border-radius:16px;padding:20px;background:linear-gradient(130deg,rgba(226,0,49,.95),rgba(148,17,57,.95)),url('static/img/cidade-predio.jpg') center/cover;color:#fff;display:flex;flex-direction:column;justify-content:end}
-    .notice-list article{padding:14px;border-radius:14px;background:#fff;border:1px solid #ece4e8;margin-bottom:10px}.notice-list small{color:var(--muted)}
-    @media(max-width:900px){.services{grid-template-columns:1fr 1fr}.comunicados{grid-template-columns:1fr}}
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+
+    :root {
+      --purple: #664F98;
+      --purple-dark: #4A3470;
+      --purple-light: #8B70CC;
+      --teal: #00A091;
+      --teal-dark: #007A6E;
+      --teal-light: #00BFB0;
+      --red: #E20031;
+      --yellow: #F0A500;
+      --cream: #F0EBE0;
+      --dark: #1E1433;
+      --text: #2A2040;
+      --muted: #6B6480;
+      --subtle: #A498B8;
+      --bg: #F7F5FB;
+      --surface: #FFFFFF;
+      --border: #EDE8F5;
+      --shadow: 0 4px 24px rgba(102, 79, 152, .10);
+      --shadow-hover: 0 16px 48px rgba(102, 79, 152, .20);
+      --radius: 20px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(255, 255, 255, .92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 2px solid var(--red);
+    }
+
+    .nav-in {
+      max-width: 1240px;
+      margin: 0 auto;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+
+    .brand img {
+      height: 46px;
+      display: block;
+    }
+
+    .brand-fallback {
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+    }
+
+    .brand-fallback strong {
+      font-size: 14px;
+      font-weight: 900;
+      color: var(--purple);
+      letter-spacing: -.01em;
+    }
+
+    .brand-fallback small {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--teal);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .nav-divider {
+      width: 1px;
+      height: 28px;
+      background: var(--border);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nav-links a {
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      text-decoration: none;
+      border-radius: 10px;
+      transition: all .2s;
+    }
+
+    .nav-links a:hover {
+      background: var(--bg);
+      color: var(--purple);
+    }
+
+    .nav-links a.on {
+      background: rgba(102, 79, 152, .1);
+      color: var(--purple);
+    }
+
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 6px 14px 6px 6px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+      background: white;
+      transition: box-shadow .2s;
+    }
+
+    .user-pill:hover {
+      box-shadow: 0 4px 16px rgba(102, 79, 152, .14);
+    }
+
+    .avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      display: grid;
+      place-items: center;
+      font-size: 11px;
+      font-weight: 900;
+      color: white;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 520px;
+      display: flex;
+      align-items: center;
+      background:
+        linear-gradient(110deg, rgba(30, 16, 58, .93) 0%, rgba(30, 16, 58, .80) 45%, rgba(30, 16, 58, .50) 100%),
+        url('static/img/cidade-arcos.jpg') center/cover no-repeat;
+      padding: 80px 28px 100px;
+    }
+
+    .hero-dots {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: radial-gradient(rgba(255, 255, 255, .05) 1px, transparent 1px);
+      background-size: 30px 30px;
+    }
+
+    .hero-in {
+      max-width: 1240px;
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-left {}
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(255, 255, 255, .15);
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      color: rgba(255, 255, 255, .75);
+      margin-bottom: 24px;
+    }
+
+    .hero-badge span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #4ADE80;
+      flex-shrink: 0;
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: .3
+      }
+    }
+
+    .hero h1 {
+      font-size: clamp(34px, 4.5vw, 58px);
+      font-weight: 900;
+      line-height: 1.06;
+      letter-spacing: -.025em;
+      color: white;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 .hi {
+      background: linear-gradient(120deg, #C4ABFF, var(--teal-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 16px;
+      color: rgba(255, 255, 255, .62);
+      line-height: 1.7;
+      margin-bottom: 36px;
+      max-width: 440px;
+    }
+
+    .hero-tagline {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      background: rgba(0, 160, 145, .15);
+      border: 1px solid rgba(0, 160, 145, .3);
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--teal-light);
+      font-style: italic;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .stat-card {
+      background: rgba(255, 255, 255, .07);
+      border: 1px solid rgba(255, 255, 255, .1);
+      border-radius: 16px;
+      padding: 18px 16px;
+      backdrop-filter: blur(8px);
+      text-align: center;
+    }
+
+    .stat-card strong {
+      display: block;
+      font-size: 28px;
+      font-weight: 900;
+      color: white;
+      line-height: 1;
+    }
+
+    .stat-card small {
+      font-size: 11px;
+      color: rgba(255, 255, 255, .45);
+      font-weight: 600;
+      margin-top: 4px;
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
+    /* ── CONTENT ── */
+    .content {
+      max-width: 1240px;
+      margin: -44px auto 64px;
+      padding: 0 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--subtle);
+      margin-bottom: 14px;
+    }
+
+    /* ── SERVICE CARDS ── */
+    .services {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .svc {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px 22px;
+      text-decoration: none;
+      color: var(--text);
+      box-shadow: var(--shadow);
+      transition: transform .35s cubic-bezier(.16, 1, .3, 1), box-shadow .35s cubic-bezier(.16, 1, .3, 1);
+      position: relative;
+      overflow: hidden;
+      will-change: transform;
+    }
+
+    .svc:hover {
+      transform: translateY(-7px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .svc::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--c-top);
+      opacity: 0;
+      transition: opacity .3s;
+    }
+
+    .svc:hover::before {
+      opacity: 1;
+    }
+
+    .svc-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: var(--c-bg);
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 20px var(--c-shadow);
+    }
+
+    .svc-icon svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .svc h3 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      line-height: 1.35;
+    }
+
+    .svc p {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .svc-arrow {
+      position: absolute;
+      bottom: 18px;
+      right: 18px;
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      background: var(--bg);
+      display: grid;
+      place-items: center;
+      font-size: 12px;
+      color: var(--muted);
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: all .3s;
+    }
+
+    .svc:hover .svc-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .svc-a {
+      --c-bg: linear-gradient(135deg, #664F98, #8B70CC);
+      --c-top: linear-gradient(90deg, #664F98, #8B70CC);
+      --c-shadow: rgba(102, 79, 152, .32);
+    }
+
+    .svc-b {
+      --c-bg: linear-gradient(135deg, #00A091, #00BFB0);
+      --c-top: linear-gradient(90deg, #00A091, #00BFB0);
+      --c-shadow: rgba(0, 160, 145, .3);
+    }
+
+    .svc-c {
+      --c-bg: linear-gradient(135deg, #E20031, #FF3D60);
+      --c-top: linear-gradient(90deg, #E20031, #FF3D60);
+      --c-shadow: rgba(226, 0, 49, .3);
+    }
+
+    .svc-d {
+      --c-bg: linear-gradient(135deg, #F0A500, #FFB82E);
+      --c-top: linear-gradient(90deg, #F0A500, #FFB82E);
+      --c-shadow: rgba(240, 165, 0, .3);
+    }
+
+    .svc-soon {
+      cursor: default;
+    }
+
+    .svc-soon:hover {
+      transform: none;
+      box-shadow: var(--shadow);
+    }
+
+    .soon-chip {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      background: var(--bg);
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--subtle);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      border: 1px solid var(--border);
+    }
+
+    /* ── PHOTO BAND ── */
+    .photo-band {
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: relative;
+      min-height: 200px;
+      background: url('static/img/cidade-onda.jpg') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+    }
+
+    .photo-band-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(102, 79, 152, .92) 0%, rgba(102, 79, 152, .55) 55%, rgba(102, 79, 152, .2) 100%);
+    }
+
+    .photo-band-content {
+      position: relative;
+      z-index: 1;
+      padding: 40px 40px;
+      color: white;
+    }
+
+    .photo-band-content p {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: rgba(255, 255, 255, .55);
+      margin-bottom: 10px;
+    }
+
+    .photo-band-content h2 {
+      font-size: 24px;
+      font-weight: 900;
+      line-height: 1.25;
+      max-width: 360px;
+    }
+
+    .photo-band-content h2 em {
+      font-style: normal;
+      color: var(--teal-light);
+    }
+
+    /* ── PANEL ── */
+    .panel {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+    }
+
+    .panel-head h2 { font-size: 18px; font-weight: 800; }
+
+    .status-card {
+      border-radius: 16px;
+      padding: 20px;
+      background: linear-gradient(135deg, #F0FDF9, #ECFDF5);
+      border: 1px solid rgba(0, 160, 145, .2);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .status-ico {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--teal), var(--teal-light));
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      flex-shrink: 0;
+      box-shadow: 0 6px 16px rgba(0, 160, 145, .3);
+    }
+
+    .status-text strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+
+    .status-text span {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .tips-card {
+      border-radius: 16px;
+      padding: 20px;
+      background: linear-gradient(135deg, #F9F7FF, #F2EFF9);
+      border: 1px solid rgba(102, 79, 152, .14);
+    }
+
+    .tips-card h4 {
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: var(--purple);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    .tips-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .tips-card ul li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+      font-weight: 500;
+    }
+
+    .tips-card ul li::before {
+      content: '→';
+      color: var(--teal);
+      font-weight: 800;
+      flex-shrink: 0;
+      font-size: 11px;
+      margin-top: 1px;
+    }
+
+    /* ── ALERT BAR ── */
+    .alert-bar {
+      background: white;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .alert-bar.hidden {
+      display: none;
+    }
+
+    .alert-bar-in {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 13px 28px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .alert-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 12px;
+      background: var(--red);
+      border-radius: 100px;
+      font-size: 10px;
+      font-weight: 800;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .alert-bar p {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      flex: 1;
+    }
+
+    .alert-bar time {
+      font-size: 11px;
+      color: var(--subtle);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .alert-dismiss {
+      width: 28px;
+      height: 28px;
+      border: none;
+      background: var(--bg);
+      border-radius: 8px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-size: 16px;
+      flex-shrink: 0;
+      transition: background .2s;
+    }
+
+    .alert-dismiss:hover {
+      background: var(--border);
+    }
+
+    /* ── MEUS AGENDAMENTOS ── */
+    .agendat-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .agendat-nav {
+      display: flex;
+      gap: 6px;
+    }
+
+    .agendat-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: white;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      font-size: 15px;
+      color: var(--muted);
+      transition: all .2s;
+    }
+
+    .agendat-btn:hover {
+      background: var(--purple);
+      color: white;
+      border-color: var(--purple);
+    }
+
+    .agendat-scroll {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+      padding-bottom: 4px;
+    }
+
+    .agendat-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ag-card {
+      min-width: 232px;
+      flex-shrink: 0;
+      scroll-snap-align: start;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      color: var(--text);
+      transition: transform .3s cubic-bezier(.16, 1, .3, 1), box-shadow .3s;
+    }
+
+    .ag-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .ag-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--c-bar, var(--purple));
+    }
+
+    .ag-date {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--subtle);
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      margin-bottom: 10px;
+    }
+
+    .ag-type {
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+
+    .ag-local {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    .ag-time {
+      display: flex;
+      align-items: baseline;
+      gap: 5px;
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--text);
+    }
+
+    .ag-time span {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    .ag-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .ag-conf {
+      background: rgba(0, 160, 145, .1);
+      color: var(--teal-dark);
+    }
+
+    .ag-pend {
+      background: rgba(240, 165, 0, .12);
+      color: #B87B00;
+    }
+
+    .ag-new {
+      background: rgba(102, 79, 152, .1);
+      color: var(--purple);
+    }
+
+    .agendat-see-all {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--purple);
+      text-decoration: none;
+      padding: 6px 14px;
+      background: rgba(102, 79, 152, .08);
+      border-radius: 10px;
+      transition: background .2s;
+    }
+
+    .agendat-see-all:hover {
+      background: rgba(102, 79, 152, .15);
+    }
+
+    /* ── COMUNICADOS CAROUSEL ── */
+    .comm-wrap {
+      position: relative;
+    }
+
+    .comm-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .comm-nav { display: flex; gap: 6px; align-items: center; }
+
+    .comm-btn {
+      width: 32px; height: 32px; border-radius: 10px;
+      border: 1.5px solid var(--border); background: white;
+      display: grid; place-items: center; cursor: pointer;
+      font-size: 15px; color: var(--muted); transition: all .2s;
+    }
+    .comm-btn:hover { background: var(--red); color: white; border-color: var(--red); }
+
+    .comm-dots { display: flex; gap: 6px; align-items: center; }
+    .comm-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--border); cursor: pointer; transition: all .25s;
+      border: none; padding: 0;
+    }
+    .comm-dot.on { background: var(--red); width: 22px; border-radius: 4px; }
+
+    .comm-outer {
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .comm-track {
+      display: flex;
+      transition: transform .45s cubic-bezier(.4,0,.2,1);
+    }
+
+    .comm-slide {
+      min-width: 100%; position: relative; overflow: hidden;
+      min-height: 190px;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 28px 36px;
+      color: white;
+    }
+
+    .comm-slide::before {
+      content: ''; position: absolute; inset: 0;
+      background: var(--slide-glow);
+    }
+
+    .slide-1 {
+      background:
+        linear-gradient(120deg, rgba(20,10,40,.96) 0%, rgba(60,20,60,.92) 55%, rgba(20,10,40,.90) 100%),
+        url('static/img/cidade-arcos.jpg') center/cover no-repeat;
+      --slide-glow: radial-gradient(ellipse 60% 80% at 85% 0%, rgba(226,0,49,.5), transparent 55%);
+    }
+    .slide-2 {
+      background:
+        linear-gradient(120deg, rgba(10,30,40,.96) 0%, rgba(0,80,70,.88) 55%, rgba(10,30,40,.90) 100%),
+        url('static/img/cidade-onda.jpg') center/cover no-repeat;
+      --slide-glow: radial-gradient(ellipse 60% 80% at 80% 0%, rgba(0,160,145,.4), transparent 55%);
+    }
+    .slide-3 {
+      background:
+        linear-gradient(120deg, rgba(20,10,40,.96) 0%, rgba(40,20,90,.90) 55%, rgba(20,10,40,.90) 100%),
+        url('static/img/cidade-arcos.jpg') center 30%/cover no-repeat;
+      --slide-glow: radial-gradient(ellipse 60% 80% at 82% 0%, rgba(102,79,152,.5), transparent 55%);
+    }
+    .slide-4 {
+      background:
+        linear-gradient(120deg, rgba(10,30,40,.96) 0%, rgba(0,60,55,.88) 55%, rgba(10,30,40,.90) 100%),
+        url('static/img/cidade-onda.jpg') right center/cover no-repeat;
+      --slide-glow: radial-gradient(ellipse 60% 80% at 80% 0%, rgba(0,130,115,.45), transparent 55%);
+    }
+
+    .comm-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 13px; border-radius: 100px;
+      font-size: 10px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: .08em; margin-bottom: 12px;
+      position: relative; width: fit-content;
+    }
+    .chip-red   { background: var(--red); }
+    .chip-teal  { background: var(--teal); }
+    .chip-purple{ background: var(--purple); }
+
+    .comm-slide h3 {
+      font-size: 18px; font-weight: 800;
+      line-height: 1.4; max-width: 680px; position: relative;
+    }
+    .comm-slide time {
+      font-size: 12px; color: rgba(255,255,255,.4);
+      margin-top: 10px; display: block; position: relative; font-weight: 600;
+    }
+    .comm-slide .comm-num {
+      position: absolute; top: 24px; right: 32px;
+      font-size: 72px; font-weight: 900;
+      color: rgba(255,255,255,.04); line-height: 1;
+      letter-spacing: -.04em; pointer-events: none;
+    }
+
+    /* ── BOTTOM SIMPLE ROW ── */
+    .info-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 960px) {
+      .services { grid-template-columns: 1fr 1fr; }
+      .info-row  { grid-template-columns: 1fr; }
+      .hero-in   { grid-template-columns: 1fr; }
+      .hero-stats { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      .services { grid-template-columns: 1fr; }
+      .comm-slide h3 { font-size: 15px; }
+      .comm-slide { padding: 22px 20px; }
+      .comm-num { display: none; }
+
+      .hero { padding: 52px 20px 90px; }
+      .content { padding: 0 16px; }
+
+      .nav-in {
+        padding: 0 16px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .alert-bar-in {
+        padding: 12px 16px;
+      }
+    }
   </style>
 </head>
-<body>
-<header class="top"><div class="top-in"><strong>🏛️ Serviço CA</strong><nav style="font-size:13px;color:#4c4e61">Página inicial | Lista de Ocorrências | Lucas Nascimento</nav></div></header>
-<section class="hero"><div class="hero-in"><h1>Serviços da Cidade Administrativa</h1><p>Interface mais moderna, rápida e clara para agendar serviços e acompanhar solicitações.</p></div></section>
-<main>
-  <section class="panel">
-    <div class="head"><div><h2>Acesso rápido</h2><p>Principais serviços em um clique.</p></div></div>
-    <div class="services">
-      <a class="service" href="espacos.html"><div class="ico">🏛️</div><strong>Agendamento de espaços</strong><span>Sala, plenário, auditório e coworking</span></a>
-      <a class="service" href="#"><div class="ico">🚌</div><strong>Agendamento de transporte</strong><span>Deslocamento e veículos</span></a>
-      <a class="service" href="#"><div class="ico">🛠️</div><strong>Abrir ocorrência</strong><span>Manutenção e suporte</span></a>
-      <a class="service" href="#"><div class="ico">🪪</div><strong>Agendamento da CIN</strong><span>Emissão da identidade nacional</span></a>
-    </div>
-  </section>
 
-  <section class="panel">
-    <div class="head"><div><h2>Comunicados</h2><p>Informações importantes da administração.</p></div></div>
-    <div class="comunicados">
-      <article class="notice-main"><small>Comunicado principal</small><h3>Nova política de uso de espaços compartilhados entra em vigor em 20/05/2026.</h3></article>
-      <div class="notice-list">
-        <article><small>13/05/2026</small><p>Manutenção programada do sistema de agendamento das 22h às 23h.</p></article>
-        <article><small>12/05/2026</small><p>Novo fluxo de reserva de plenários com aprovação automática para horários livres.</p></article>
-        <article><small>10/05/2026</small><p>Atualização de regras para uso do coworking do 6º andar (Prédio Gerais).</p></article>
+<body>
+
+  <nav>
+    <div class="nav-in">
+      <a class="brand" href="index.html">
+        <img src="static/img/logo.png" alt="Cidade Administrativa"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="brand-fallback" style="display:none">
+          <strong>CIDADE ADMINISTRATIVA</strong>
+          <small>Cuidar do espaço é cuidar das pessoas</small>
+        </div>
+      </a>
+      <div class="nav-divider"></div>
+      <div class="nav-links">
+        <a href="index.html" class="on">Início</a>
+        <a href="ocorrencias.html">Ocorrências</a>
+        <a href="espacos.html">Agendamentos</a>
+      </div>
+      <div class="user-pill">
+        <div class="avatar">LN</div>
+        Lucas Nascimento
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-dots"></div>
+    <div class="hero-in">
+      <div class="hero-left">
+        <div class="hero-badge"><span></span>Portal de Serviços Oficiais</div>
+        <h1>Bem Vindo ao<br><span class="hi">Serviços CA!</span></h1>
+        <p>Gerencie seus agendamentos e ocorrências de forma simples e eficiente em um só lugar.</p>
+        <div class="hero-tagline">"Cuidar do espaço é cuidar das pessoas"</div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-card"><strong>5</strong><small>Agendamentos</small></div>
+        <div class="stat-card"><strong>2</strong><small>Ocorrências Ativas</small></div>
+        <div class="stat-card"><strong>100%</strong><small>Online</small></div>
+        <div class="stat-card" style="grid-column:1/-1; text-align:left; display:flex; align-items:center; gap:10px;">
+          <span
+            style="width:8px;height:8px;border-radius:50%;background:#4ADE80;box-shadow:0 0 8px #4ADE80;flex-shrink:0"></span>
+          <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,.75)">Todos os sistemas operacionais</span>
+        </div>
       </div>
     </div>
   </section>
-</main>
-</body></html>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- SERVIÇOS -->
+    <div>
+      <div class="services">
+
+        <!-- Agendamento de espaços -->
+        <a class="svc svc-a" href="espacos.html">
+          <div class="svc-icon">
+            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 38V22C6 14 10 10 16 10C22 10 26 14 26 22V38" stroke="white" stroke-width="3.5"
+                stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M26 38V26C26 21 29 19 32 19C35 19 38 21 38 26V38" stroke="white" stroke-width="3.5"
+                stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M3 38H41" stroke="white" stroke-width="3.5" stroke-linecap="round" />
+            </svg>
+          </div>
+          <h3>Agendamento de espaços</h3>
+          <p>Sala, plenário, auditório e coworking</p>
+          <div class="svc-arrow">→</div>
+        </a>
+
+        <!-- Agendamento de transporte -->
+        <div class="svc svc-b svc-soon">
+          <div class="soon-chip">Em breve</div>
+          <div class="svc-icon">
+            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="5" y="10" width="34" height="22" rx="5" stroke="white" stroke-width="3.5" />
+              <path d="M5 19H39" stroke="white" stroke-width="3" stroke-linecap="round" />
+              <circle cx="13" cy="36" r="3" fill="white" />
+              <circle cx="31" cy="36" r="3" fill="white" />
+              <path d="M13 10V7M31 10V7" stroke="white" stroke-width="3" stroke-linecap="round" />
+              <path d="M5 27H39" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="3 3" />
+            </svg>
+          </div>
+          <h3>Agendamento de transporte</h3>
+          <p>Deslocamento e veículos</p>
+        </div>
+
+        <!-- Abrir ocorrência -->
+        <a class="svc svc-c" href="ocorrencia.html">
+          <div class="svc-icon">
+            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M28 6C33 6 37 10 37 15C37 17 36.3 18.8 35.1 20.2L38 23L31 30L28 27C26.7 27.8 25.2 28.2 23.5 28C19 27.4 15.6 23.5 16 19C16.5 13.8 21.5 9.4 27 6.1"
+                stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M6 38L18 26" stroke="white" stroke-width="3.5" stroke-linecap="round" />
+            </svg>
+          </div>
+          <h3>Abrir ocorrência</h3>
+          <p>Manutenção e suporte técnico</p>
+          <div class="svc-arrow">→</div>
+        </a>
+
+        <!-- Agendamento da CIN -->
+        <div class="svc svc-d svc-soon">
+          <div class="soon-chip">Em breve</div>
+          <div class="svc-icon">
+            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="10" width="36" height="24" rx="5" stroke="white" stroke-width="3.5" />
+              <circle cx="15" cy="22" r="4.5" stroke="white" stroke-width="3" />
+              <path d="M25 17H36" stroke="white" stroke-width="3" stroke-linecap="round" />
+              <path d="M25 22H36" stroke="white" stroke-width="3" stroke-linecap="round" />
+              <path d="M25 27H31" stroke="white" stroke-width="3" stroke-linecap="round" />
+            </svg>
+          </div>
+          <h3>Agendamento da CIN</h3>
+          <p>Emissão da identidade nacional</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- COMUNICADOS CAROUSEL -->
+    <div class="comm-wrap">
+      <div class="comm-head">
+        <div>
+          <div class="section-label" style="margin-bottom:4px">Comunicados</div>
+          <span style="font-size:13px;font-weight:500;color:var(--muted)">Informações e avisos da administração</span>
+        </div>
+        <div class="comm-nav">
+          <div class="comm-dots">
+            <button class="comm-dot on"  onclick="goComm(0)"></button>
+            <button class="comm-dot"     onclick="goComm(1)"></button>
+            <button class="comm-dot"     onclick="goComm(2)"></button>
+            <button class="comm-dot"     onclick="goComm(3)"></button>
+          </div>
+          <button class="comm-btn" onclick="goComm(commIdx-1)">‹</button>
+          <button class="comm-btn" onclick="goComm(commIdx+1)">›</button>
+        </div>
+      </div>
+
+      <div class="comm-outer">
+        <div class="comm-track" id="commTrack">
+
+          <div class="comm-slide slide-1">
+            <span class="comm-num">01</span>
+            <div class="comm-chip chip-red">⚡ Destaque</div>
+            <h3>Nova política de uso de espaços compartilhados entra em vigor em 20/05/2026.</h3>
+            <time>Comunicado principal · 20/05/2026</time>
+          </div>
+
+          <div class="comm-slide slide-2">
+            <span class="comm-num">02</span>
+            <div class="comm-chip chip-teal">🔧 Manutenção</div>
+            <h3>Manutenção programada do sistema de agendamento das 22h às 23h de hoje.</h3>
+            <time>13/05/2026</time>
+          </div>
+
+          <div class="comm-slide slide-3">
+            <span class="comm-num">03</span>
+            <div class="comm-chip chip-purple">✨ Novidade</div>
+            <h3>Novo fluxo de reserva de plenários com aprovação automática para horários livres.</h3>
+            <time>12/05/2026</time>
+          </div>
+
+          <div class="comm-slide slide-4">
+            <span class="comm-num">04</span>
+            <div class="comm-chip chip-teal">📋 Atualização</div>
+            <h3>Atualização das regras para uso do coworking do 6º andar (Prédio Gerais).</h3>
+            <time>10/05/2026</time>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- MEUS AGENDAMENTOS -->
+    <div>
+      <div class="agendat-head">
+        <div>
+          <div class="section-label" style="margin-bottom:4px">Meus agendamentos</div>
+          <span style="font-size:13px;font-weight:500;color:var(--muted)">Próximas reservas confirmadas</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <a class="agendat-see-all" href="espacos.html">Ver todos</a>
+          <div class="agendat-nav">
+            <button class="agendat-btn"
+              onclick="document.getElementById('agScroll').scrollBy({left:-260,behavior:'smooth'})">‹</button>
+            <button class="agendat-btn"
+              onclick="document.getElementById('agScroll').scrollBy({left:260,behavior:'smooth'})">›</button>
+          </div>
+        </div>
+      </div>
+      <div class="agendat-scroll" id="agScroll">
+
+        <a class="ag-card" href="espacos.html" style="--c-bar: linear-gradient(90deg,#664F98,#8B70CC)">
+          <div class="ag-badge ag-conf">Confirmado</div>
+          <div class="ag-date">Qua, 14 Mai 2026</div>
+          <div class="ag-type">Sala de Reunião</div>
+          <div class="ag-local">Prédio Minas · 4º andar</div>
+          <div class="ag-time">14:00 <span>→ 15:00</span></div>
+        </a>
+
+        <a class="ag-card" href="espacos.html" style="--c-bar: linear-gradient(90deg,#F0A500,#FFB82E)">
+          <div class="ag-badge ag-pend">Aguardando</div>
+          <div class="ag-date">Qua, 20 Mai 2026</div>
+          <div class="ag-type">Plenário</div>
+          <div class="ag-local">Prédio Gerais · 9º andar</div>
+          <div class="ag-time">09:00 <span>→ 11:00</span></div>
+        </a>
+
+        <a class="ag-card" href="espacos.html" style="--c-bar: linear-gradient(90deg,#00A091,#00BFB0)">
+          <div class="ag-badge ag-conf">Confirmado</div>
+          <div class="ag-date">Sex, 22 Mai 2026</div>
+          <div class="ag-type">Coworking</div>
+          <div class="ag-local">Prédio Gerais · 6º andar</div>
+          <div class="ag-time">08:00 <span>→ 12:00</span></div>
+        </a>
+
+        <a class="ag-card" href="espacos.html" style="--c-bar: linear-gradient(90deg,#664F98,#8B70CC)">
+          <div class="ag-badge ag-new">Novo</div>
+          <div class="ag-date">Seg, 26 Mai 2026</div>
+          <div class="ag-type">Auditório Principal</div>
+          <div class="ag-local">Prédio Minas · Térreo</div>
+          <div class="ag-time">13:00 <span>→ 17:00</span></div>
+        </a>
+
+        <a class="ag-card" href="espacos.html" style="--c-bar: linear-gradient(90deg,#00A091,#00BFB0)">
+          <div class="ag-badge ag-conf">Confirmado</div>
+          <div class="ag-date">Ter, 27 Mai 2026</div>
+          <div class="ag-type">Sala de Reunião</div>
+          <div class="ag-local">Prédio Minas · 7º andar</div>
+          <div class="ag-time">10:00 <span>→ 11:00</span></div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- PHOTO BAND -->
+    <div class="photo-band">
+      <div class="photo-band-overlay"></div>
+      <div class="photo-band-content">
+        <p>Cidade Administrativa de Minas Gerais</p>
+        <h2>Um complexo pensado<br>para quem <em>trabalha aqui</em></h2>
+      </div>
+    </div>
+
+    <!-- INFO ROW -->
+    <div class="info-row">
+      <div class="panel">
+        <div class="panel-head" style="margin-bottom:16px"><h2>Status do sistema</h2></div>
+        <div class="status-card">
+          <div class="status-ico">✅</div>
+          <div class="status-text">
+            <strong>Todos os sistemas operacionais</strong>
+            <span>Verificado em 13/05/2026 às 09:00</span>
+          </div>
+        </div>
+      </div>
+      <div class="tips-card">
+        <h4>Lembretes importantes</h4>
+        <ul>
+          <li>Cancele agendamentos com ao menos 2h de antecedência no sistema.</li>
+          <li>Plenários exigem aprovação da chefia para eventos externos.</li>
+          <li>Coworking: uma estação por reserva, exclusivo 6º andar Gerais.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+  // Comunicados carousel
+  let commIdx = 0;
+  const commTrack = document.getElementById('commTrack');
+  const commDotEls = document.querySelectorAll('.comm-dot');
+  const COMM_TOTAL = 4;
+
+  function goComm(n) {
+    commIdx = ((n % COMM_TOTAL) + COMM_TOTAL) % COMM_TOTAL;
+    commTrack.style.transform = `translateX(-${commIdx * 100}%)`;
+    commDotEls.forEach((d, i) => d.classList.toggle('on', i === commIdx));
+  }
+
+  // Auto-avança a cada 6s
+  let commTimer = setInterval(() => goComm(commIdx + 1), 6000);
+
+  // Pausa o auto-avança ao interagir
+  document.querySelector('.comm-outer').addEventListener('mouseenter', () => clearInterval(commTimer));
+  document.querySelector('.comm-outer').addEventListener('mouseleave', () => {
+    commTimer = setInterval(() => goComm(commIdx + 1), 6000);
+  });
+
+  // Swipe no touch
+  let touchX = 0;
+  commTrack.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+  commTrack.addEventListener('touchend', e => {
+    const diff = touchX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) goComm(commIdx + (diff > 0 ? 1 : -1));
+  });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Abrir Ocorrência | Serviço CA</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+    :root {
+      --purple:#664F98; --purple-dark:#4A3470; --purple-light:#8B70CC;
+      --teal:#00A091; --teal-light:#00BFB0;
+      --red:#E20031; --yellow:#F0A500;
+      --text:#2A2040; --muted:#6B6480; --subtle:#A498B8;
+      --bg:#F7F5FB; --surface:#FFFFFF; --border:#EDE8F5;
+      --shadow:0 4px 24px rgba(102,79,152,.10); --radius:20px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+
+    /* NAV */
+    nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:2px solid var(--red)}
+    .nav-in{max-width:1240px;margin:0 auto;height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 28px}
+    .brand{display:flex;align-items:center;gap:14px;text-decoration:none}
+    .brand img{height:46px;display:block}
+    .brand-fallback{display:flex;flex-direction:column;line-height:1}
+    .brand-fallback strong{font-size:14px;font-weight:900;color:var(--purple);letter-spacing:-.01em}
+    .brand-fallback small{font-size:10px;font-weight:600;color:var(--teal);letter-spacing:.04em;text-transform:uppercase}
+    .nav-divider{width:1px;height:28px;background:var(--border)}
+    .nav-links{display:flex;align-items:center;gap:4px}
+    .nav-links a{padding:8px 14px;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;border-radius:10px;transition:all .2s}
+    .nav-links a:hover{background:var(--bg);color:var(--purple)}
+    .nav-links a.on{background:rgba(102,79,152,.1);color:var(--purple)}
+    .user-pill{display:flex;align-items:center;gap:9px;padding:6px 14px 6px 6px;border:1px solid var(--border);border-radius:100px;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;background:white}
+    .avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--purple-light));display:grid;place-items:center;font-size:11px;font-weight:900;color:white}
+
+    /* HERO */
+    .hero{position:relative;overflow:hidden;padding:52px 28px 80px;background:linear-gradient(110deg,rgba(30,16,58,.93) 0%,rgba(30,16,58,.80) 50%,rgba(30,16,58,.55) 100%),url('static/img/cidade-arcos.jpg') center/cover no-repeat}
+    .hero-dots{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);background-size:30px 30px}
+    .hero-in{max-width:1240px;margin:0 auto;position:relative;z-index:1}
+    .back-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:rgba(255,255,255,.48);text-decoration:none;margin-bottom:22px;transition:color .2s}
+    .back-link:hover{color:rgba(255,255,255,.8)}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:100px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.7);margin-bottom:16px}
+    .hero h1{font-size:clamp(28px,4vw,46px);font-weight:900;line-height:1.08;letter-spacing:-.022em;color:white;margin-bottom:12px}
+    .hero h1 em{font-style:normal;background:linear-gradient(120deg,#FFAAC4,#FF3D60);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero p{font-size:16px;color:rgba(255,255,255,.55);max-width:560px;font-weight:500}
+
+    /* STEPS */
+    .steps-wrap{max-width:1240px;margin:-26px auto 0;padding:0 28px;position:relative;z-index:10}
+    .steps{display:flex;align-items:center;background:white;border:1px solid var(--border);border-radius:16px;padding:6px;box-shadow:0 8px 32px rgba(102,79,152,.12);width:fit-content}
+    .step{display:flex;align-items:center;gap:10px;padding:10px 20px;border-radius:12px;font-size:13px;font-weight:700;color:var(--subtle);transition:all .2s}
+    .step.active{background:linear-gradient(135deg,var(--red),#FF3D60);color:white;box-shadow:0 4px 16px rgba(226,0,49,.32)}
+    .step.done{color:var(--teal)}
+    .step-num{width:24px;height:24px;border-radius:50%;background:rgba(226,0,49,.1);display:grid;place-items:center;font-size:11px;font-weight:900;color:var(--red);flex-shrink:0}
+    .step.active .step-num{background:rgba(255,255,255,.25);color:white}
+    .step.done .step-num{background:rgba(0,160,145,.12);color:var(--teal)}
+    .step-sep{width:24px;height:1px;background:var(--border);flex-shrink:0}
+
+    /* MAIN */
+    .main{max-width:1240px;margin:28px auto 64px;padding:0 28px;display:grid;grid-template-columns:1.6fr 1fr;gap:22px;align-items:start}
+
+    /* CARD */
+    .card{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow)}
+    .card-title{font-size:16px;font-weight:800;margin-bottom:24px;display:flex;align-items:center;gap:10px}
+    .card-icon{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:15px;flex-shrink:0;box-shadow:0 4px 12px var(--i-shadow,rgba(102,79,152,.28))}
+    .card-icon.red{background:linear-gradient(135deg,var(--red),#FF3D60);--i-shadow:rgba(226,0,49,.28)}
+    .card-icon.purple{background:linear-gradient(135deg,var(--purple),var(--purple-light));--i-shadow:rgba(102,79,152,.28)}
+    .card-icon.teal{background:linear-gradient(135deg,var(--teal),var(--teal-light));--i-shadow:rgba(0,160,145,.28)}
+
+    /* FIELDS */
+    .fg{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:0}
+    .fg+.fg,.fg+.f,.f+.fg,.f+.f{margin-top:16px}
+    .f{display:flex;flex-direction:column;gap:6px}
+    .f.full{grid-column:1/-1}
+    .f label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+    .f label .req{color:var(--red)}
+    .f select,.f input[type="text"],.f input[type="tel"],.f textarea{
+      width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:12px;
+      font:600 14px 'Montserrat',sans-serif;color:var(--text);background:white;
+      transition:border-color .2s,box-shadow .2s;appearance:none;-webkit-appearance:none;outline:none;resize:none
+    }
+    .f textarea{min-height:120px;resize:vertical}
+    .f select:focus,.f input:focus,.f textarea:focus{border-color:var(--red);box-shadow:0 0 0 4px rgba(226,0,49,.09)}
+    .f .readonly{background:var(--bg);color:var(--muted);cursor:default;border-color:var(--border)!important;box-shadow:none!important}
+    .f .hint{font-size:11px;color:var(--subtle);font-weight:500;margin-top:2px}
+
+    /* PRIORITY */
+    .priority-group{display:flex;gap:10px}
+    .prio-opt{
+      flex:1;display:flex;align-items:center;gap:10px;padding:12px 16px;
+      border:1.5px solid var(--border);border-radius:12px;cursor:pointer;
+      font-size:14px;font-weight:600;color:var(--text);transition:all .2s;
+    }
+    .prio-opt input{display:none}
+    .p-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;display:grid;place-items:center;transition:all .2s}
+    .prio-opt.checked-normal{border-color:var(--purple);background:rgba(102,79,152,.05)}
+    .prio-opt.checked-normal .p-dot{border-color:var(--purple);background:var(--purple)}
+    .prio-opt.checked-normal .p-dot::after{content:'';width:6px;height:6px;border-radius:50%;background:white}
+    .prio-opt.checked-urgente{border-color:var(--red);background:rgba(226,0,49,.05)}
+    .prio-opt.checked-urgente .p-dot{border-color:var(--red);background:var(--red)}
+    .prio-opt.checked-urgente .p-dot::after{content:'';width:6px;height:6px;border-radius:50%;background:white}
+
+    /* FILE DROP */
+    .file-drop{
+      border:2px dashed var(--border);border-radius:14px;padding:28px;
+      text-align:center;cursor:pointer;transition:all .2s;position:relative;
+      background:var(--bg);
+    }
+    .file-drop:hover,.file-drop.drag{border-color:var(--red);background:rgba(226,0,49,.04)}
+    .file-drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+    .file-drop .drop-ico{font-size:28px;margin-bottom:8px}
+    .file-drop p{font-size:13px;font-weight:600;color:var(--muted)}
+    .file-drop small{font-size:11px;color:var(--subtle);font-weight:500}
+    .file-list{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+    .file-item{display:flex;align-items:center;gap:10px;padding:8px 12px;background:white;border:1px solid var(--border);border-radius:10px;font-size:12px;font-weight:600;color:var(--text)}
+    .file-item span{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .file-item button{border:none;background:none;color:var(--muted);cursor:pointer;font-size:14px;padding:0;line-height:1}
+
+    /* BTNS */
+    .form-btns{display:flex;gap:12px;margin-top:24px}
+    .btn-cancel{flex:1;padding:15px;border:1.5px solid var(--border);border-radius:14px;background:white;font:700 15px 'Montserrat',sans-serif;color:var(--muted);cursor:pointer;transition:all .2s}
+    .btn-cancel:hover{border-color:var(--muted);color:var(--text)}
+    .btn-submit{flex:2;padding:15px;background:linear-gradient(135deg,var(--red),#FF3D60);color:white;font:700 15px 'Montserrat',sans-serif;border:none;border-radius:14px;cursor:pointer;box-shadow:0 8px 24px rgba(226,0,49,.3);transition:transform .2s,box-shadow .2s}
+    .btn-submit:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(226,0,49,.4)}
+
+    /* SIDEBAR CARDS */
+    .sidebar{display:flex;flex-direction:column;gap:16px}
+    .info-card{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+    .info-card h3{font-size:14px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+    .resp-row{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border)}
+    .resp-row:first-of-type{padding-top:0}
+    .resp-row:last-of-type{border-bottom:none;padding-bottom:0}
+    .resp-label{font-size:11px;font-weight:700;color:var(--subtle);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+    .resp-val{font-size:13px;font-weight:700;color:var(--text)}
+    .sla-card{background:linear-gradient(135deg,#F9F7FF,#F2EFF9);border:1px solid rgba(102,79,152,.14);border-radius:var(--radius);padding:20px}
+    .sla-card h4{font-size:12px;font-weight:800;color:var(--purple);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
+    .sla-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(102,79,152,.1);font-size:13px}
+    .sla-row:last-child{border-bottom:none;padding-bottom:0}
+    .sla-row span{color:var(--muted);font-weight:500}
+    .sla-row strong{font-weight:700;color:var(--text)}
+
+    /* SUCCESS */
+    .success-overlay{position:fixed;inset:0;z-index:500;background:rgba(10,4,20,.65);backdrop-filter:blur(8px);display:none;place-items:center}
+    .success-overlay.visible{display:grid;animation:fadeIn .3s}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .success-card{background:white;border-radius:28px;padding:48px 40px;text-align:center;max-width:440px;width:90%;box-shadow:0 32px 80px rgba(0,0,0,.22);animation:popIn .4s cubic-bezier(.16,1,.3,1)}
+    @keyframes popIn{from{opacity:0;transform:scale(.9) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+    .success-ico{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--teal-light));display:grid;place-items:center;font-size:36px;margin:0 auto 24px;box-shadow:0 12px 32px rgba(0,160,145,.35)}
+    .success-card h2{font-size:22px;font-weight:900;margin-bottom:10px}
+    .success-card p{font-size:14px;color:var(--muted);margin-bottom:10px;line-height:1.6;font-weight:500}
+    .protocolo{font-size:28px;font-weight:900;color:var(--purple);margin:16px 0}
+    .success-btns{display:flex;gap:10px;margin-top:24px}
+    .btn-lista{flex:1;padding:13px;border:1.5px solid var(--border);border-radius:12px;background:white;font:700 13px 'Montserrat',sans-serif;color:var(--muted);cursor:pointer;text-decoration:none;display:grid;place-items:center}
+    .btn-home{flex:1;padding:13px;background:linear-gradient(135deg,var(--purple),var(--purple-light));color:white;font:700 13px 'Montserrat',sans-serif;border:none;border-radius:12px;cursor:pointer;text-decoration:none;display:grid;place-items:center}
+
+    @media(max-width:860px){.main{grid-template-columns:1fr}.fg{grid-template-columns:1fr}}
+    @media(max-width:600px){.hero{padding:40px 16px 70px}.main{padding:0 16px}.steps-wrap{padding:0 16px}.nav-links{display:none}}
+  </style>
+</head>
+<body>
+
+<!-- SUCCESS -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-card">
+    <div class="success-ico">✅</div>
+    <h2>Ocorrência registrada!</h2>
+    <p>Sua solicitação foi enviada com sucesso.</p>
+    <div class="protocolo" id="protocolo">#00147</div>
+    <p style="font-size:12px">Guarde o número do protocolo para acompanhar o andamento.</p>
+    <div class="success-btns">
+      <a class="btn-lista" href="ocorrencias.html">Ver minhas ocorrências</a>
+      <a class="btn-home" href="index.html">Ir para o início</a>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-in">
+    <a class="brand" href="index.html">
+      <img src="static/img/logo.png" alt="Cidade Administrativa"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="brand-fallback" style="display:none">
+        <strong>CIDADE ADMINISTRATIVA</strong>
+        <small>Cuidar do espaço é cuidar das pessoas</small>
+      </div>
+    </a>
+    <div class="nav-divider"></div>
+    <div class="nav-links">
+      <a href="index.html">Início</a>
+      <a href="ocorrencias.html" class="on">Ocorrências</a>
+      <a href="espacos.html">Agendamentos</a>
+    </div>
+    <div class="user-pill">
+      <div class="avatar">LN</div>
+      Lucas Nascimento
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-dots"></div>
+  <div class="hero-in">
+    <a class="back-link" href="index.html">← Página inicial</a>
+    <div class="hero-badge">🛠️ Suporte e Manutenção</div>
+    <h1>Abrir <em>ocorrência</em></h1>
+    <p>Relate problemas de manutenção, elétrica, hidráulica, limpeza ou suporte de TI. Atendimento em até 48h.</p>
+  </div>
+</section>
+
+<!-- STEPS -->
+<div class="steps-wrap">
+  <div class="steps">
+    <div class="step active" id="step1"><div class="step-num">1</div>Detalhes</div>
+    <div class="step-sep"></div>
+    <div class="step" id="step2"><div class="step-num">2</div>Localização</div>
+    <div class="step-sep"></div>
+    <div class="step" id="step3"><div class="step-num">3</div>Confirmar</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- FORM -->
+  <div style="display:flex;flex-direction:column;gap:20px">
+
+    <!-- Detalhes -->
+    <div class="card">
+      <div class="card-title"><div class="card-icon red">📋</div>Detalhes da ocorrência</div>
+      <div class="fg">
+        <div class="f">
+          <label>Grupo de serviço <span class="req">*</span></label>
+          <select id="grupo" onchange="syncServico()">
+            <option value="">Selecione...</option>
+            <option value="eletrica">Elétrica</option>
+            <option value="hidraulica">Hidráulica</option>
+            <option value="arcondicionado">Ar condicionado</option>
+            <option value="limpeza">Limpeza</option>
+            <option value="carpintaria">Carpintaria / Móveis</option>
+            <option value="ti">Suporte de TI</option>
+            <option value="outros">Outros</option>
+          </select>
+        </div>
+        <div class="f">
+          <label>Serviço solicitado <span class="req">*</span></label>
+          <select id="servico">
+            <option value="">Selecione o grupo primeiro</option>
+          </select>
+        </div>
+      </div>
+      <div class="f full" style="margin-top:16px">
+        <label>Descrição do problema <span class="req">*</span></label>
+        <textarea id="descricao" placeholder="Descreva detalhadamente o problema. Quanto mais informações, mais rápido o atendimento."></textarea>
+      </div>
+      <div class="f full" style="margin-top:16px">
+        <label>Prioridade</label>
+        <div class="priority-group">
+          <label class="prio-opt checked-normal" id="opt-normal" onclick="setPrio('normal',this)">
+            <input type="radio" name="prio" value="normal" checked/>
+            <div class="p-dot"></div>Normal
+          </label>
+          <label class="prio-opt" id="opt-urgente" onclick="setPrio('urgente',this)">
+            <input type="radio" name="prio" value="urgente"/>
+            <div class="p-dot"></div>🚨 Urgente
+          </label>
+        </div>
+        <div class="hint">Urgente: risco à segurança ou interrupção de serviço essencial.</div>
+      </div>
+    </div>
+
+    <!-- Localização -->
+    <div class="card">
+      <div class="card-title"><div class="card-icon purple">📍</div>Localização</div>
+      <div class="fg">
+        <div class="f">
+          <label>Prédio <span class="req">*</span></label>
+          <select id="predio">
+            <option value="">Selecione...</option>
+            <option>Prédio Minas</option>
+            <option>Prédio Gerais</option>
+            <option>Prédio Tiradentes</option>
+            <option>Prédio Belo Horizonte</option>
+            <option>Área comum / Estacionamento</option>
+          </select>
+        </div>
+        <div class="f">
+          <label>Andar <span class="req">*</span></label>
+          <select id="andar">
+            <option value="">Selecione...</option>
+            <option>Térreo</option>
+            <option>1º andar</option>
+            <option>2º andar</option>
+            <option>3º andar</option>
+            <option>4º andar</option>
+            <option>5º andar</option>
+            <option>6º andar</option>
+            <option>7º andar</option>
+            <option>8º andar</option>
+            <option>9º andar</option>
+          </select>
+        </div>
+        <div class="f">
+          <label>Sala / Localização</label>
+          <input type="text" id="sala" placeholder="Ex: Sala 302, Corredor B"/>
+        </div>
+        <div class="f">
+          <label>Nº da estação de trabalho</label>
+          <input type="text" id="estacao" placeholder="Ex: EST-0342"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- Anexos -->
+    <div class="card">
+      <div class="card-title"><div class="card-icon teal">📎</div>Anexos</div>
+      <div class="file-drop" id="fileDrop">
+        <input type="file" id="fileInput" multiple accept="image/*,.pdf,.doc,.docx"
+               onchange="addFiles(this.files)">
+        <div class="drop-ico">📂</div>
+        <p>Clique ou arraste arquivos aqui</p>
+        <small>Fotos, PDF ou documentos · máximo 10MB por arquivo</small>
+      </div>
+      <div class="file-list" id="fileList"></div>
+    </div>
+
+    <!-- Botões -->
+    <div class="form-btns">
+      <button class="btn-cancel" onclick="window.location='index.html'">Cancelar</button>
+      <button class="btn-submit" id="btnSubmit" onclick="submitForm()">🚀 &nbsp;Solicitar atendimento</button>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="info-card">
+      <h3><span>👤</span> Dados do responsável</h3>
+      <div class="resp-row">
+        <div><div class="resp-label">Contato</div><div class="resp-val">Lucas Nascimento</div></div>
+      </div>
+      <div class="resp-row">
+        <div><div class="resp-label">Telefone</div><div class="resp-val">39155395</div></div>
+      </div>
+      <div class="resp-row">
+        <div><div class="resp-label">Órgão / Setor</div><div class="resp-val">Intendência</div></div>
+      </div>
+    </div>
+
+    <div class="sla-card">
+      <h4>Prazo de atendimento (SLA)</h4>
+      <div class="sla-row"><span>Urgente</span><strong>até 4 horas</strong></div>
+      <div class="sla-row"><span>Elétrica / Hidráulica</span><strong>até 24 horas</strong></div>
+      <div class="sla-row"><span>Ar condicionado</span><strong>até 48 horas</strong></div>
+      <div class="sla-row"><span>Limpeza especial</span><strong>até 48 horas</strong></div>
+      <div class="sla-row"><span>Carpintaria / Móveis</span><strong>até 5 dias</strong></div>
+      <div class="sla-row"><span>Suporte de TI</span><strong>até 8 horas</strong></div>
+    </div>
+
+    <div class="info-card">
+      <h3><span>📞</span> Precisa de ajuda?</h3>
+      <p style="font-size:13px;color:var(--muted);font-weight:500;line-height:1.6">
+        Para emergências ligue para a <strong style="color:var(--text)">Central de Atendimento</strong>.<br>
+        Ramal interno: <strong style="color:var(--purple)">9000</strong>
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const servicos = {
+    eletrica:['Troca de lâmpada','Tomada/interruptor com defeito','Disjuntor desarmado','Curto-circuito','Instalação elétrica','Outro - Elétrica'],
+    hidraulica:['Vazamento em torneira','Vazamento em tubulação','Entupimento','Descarga com problema','Bebedouro com defeito','Outro - Hidráulica'],
+    arcondicionado:['Ar não está resfriando','Ar fazendo barulho','Ar desligando sozinho','Filtro para limpeza','Instalação/remoção','Outro - Ar condicionado'],
+    limpeza:['Limpeza de banheiro','Limpeza de sala','Limpeza de vidros','Dedetização','Descarte de material','Outro - Limpeza'],
+    carpintaria:['Porta com defeito','Armário danificado','Cadeira/mesa quebrada','Divisória com problema','Instalação de mobiliário','Outro - Carpintaria'],
+    ti:['Sem acesso à internet','Computador não liga','Impressora com defeito','Acesso ao sistema','Telefone IP','Outro - TI'],
+    outros:['Outro serviço não listado']
+  };
+
+  function syncServico() {
+    const g = document.getElementById('grupo').value;
+    const s = document.getElementById('servico');
+    s.innerHTML = g ? servicos[g].map(v=>`<option>${v}</option>`).join('') : '<option>Selecione o grupo primeiro</option>';
+    setStep(g ? 2 : 1);
+  }
+
+  function setPrio(val, el) {
+    document.querySelectorAll('.prio-opt').forEach(o => o.className = 'prio-opt');
+    el.classList.add('checked-' + val);
+    el.querySelector('input').checked = true;
+  }
+
+  function setStep(n) {
+    [1,2,3].forEach(i => {
+      const el = document.getElementById('step'+i);
+      el.classList.remove('active','done');
+      if(i===n) el.classList.add('active');
+      else if(i<n) el.classList.add('done');
+    });
+  }
+
+  // File drag & drop
+  const drop = document.getElementById('fileDrop');
+  drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('drag'); });
+  drop.addEventListener('dragleave', () => drop.classList.remove('drag'));
+  drop.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('drag'); addFiles(e.dataTransfer.files); });
+
+  const selectedFiles = [];
+  function addFiles(files) {
+    [...files].forEach(f => {
+      if (selectedFiles.find(x => x.name === f.name)) return;
+      selectedFiles.push(f);
+    });
+    renderFiles();
+    setStep(3);
+  }
+  function removeFile(idx) {
+    selectedFiles.splice(idx, 1);
+    renderFiles();
+  }
+  function renderFiles() {
+    const list = document.getElementById('fileList');
+    list.innerHTML = selectedFiles.map((f, idx) =>
+      `<div class="file-item"><span>📄 ${f.name}</span><span style="color:var(--subtle);font-size:11px">${(f.size/1024).toFixed(0)} KB</span><button onclick="removeFile(${idx})">×</button></div>`
+    ).join('');
+  }
+
+  function markInvalid(el) {
+    el.style.borderColor = 'var(--red)';
+    el.style.boxShadow = '0 0 0 4px rgba(226,0,49,.1)';
+    el.focus();
+    el.addEventListener('input', () => {
+      el.style.borderColor = '';
+      el.style.boxShadow = '';
+    }, { once: true });
+  }
+
+  function submitForm() {
+    const grupoEl = document.getElementById('grupo');
+    const descEl  = document.getElementById('descricao');
+    const predioEl = document.getElementById('predio');
+    if (!grupoEl.value)          { markInvalid(grupoEl);  return; }
+    if (!descEl.value.trim())    { markInvalid(descEl);   return; }
+    if (!predioEl.value)         { markInvalid(predioEl); return; }
+
+    const proto = '#00' + (Math.floor(Math.random() * 900) + 100);
+    document.getElementById('protocolo').textContent = proto;
+    setStep(3);
+    document.getElementById('successOverlay').classList.add('visible');
+  }
+</script>
+</body>
+</html>
